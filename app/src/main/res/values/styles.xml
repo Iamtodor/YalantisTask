@@ -15,4 +15,22 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="problem_status_style">
+        <item name="android:background">@drawable/problem_status</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">15dp</item>
+    </style>
+
+    <style name="grey_text">
+        <item name="android:textColor">@color/category_text_color</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="black_text">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:gravity">end</item>
+    </style>
+
 </resources>
