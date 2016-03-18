@@ -15,6 +15,7 @@ import com.todor.yalantistask1.adapter.RecyclerViewAdapter;
 import com.todor.yalantistask1.interfaces.OnImageClickListener;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
 
@@ -41,6 +42,16 @@ public class MainActivity extends BaseActivity {
         setupRecyclerView();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+        }
+        return false;
+    }
+
     public void setupToolbar() {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -62,21 +73,57 @@ public class MainActivity extends BaseActivity {
     public void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.addItemDecoration(new ItemDecorator());
-        recyclerView.setAdapter(new RecyclerViewAdapter(Utils.getImageUrlList(), this, new OnImageClickListener() {
-            @Override
-            public void onImageClick(int item) {
-                Toast.makeText(MainActivity.this, (item + 1) + " image", Toast.LENGTH_SHORT).show();
-            }
-        }));
+
+        if(Utils.isOn(this)) {
+            recyclerView.setAdapter(new RecyclerViewAdapter(Utils.getImageFromNetwork(), this, new OnImageClickListener() {
+                @Override
+                public void onImageClick(int item) {
+                    Toast.makeText(MainActivity.this, (item + 1) + getString(R.string.image), Toast.LENGTH_SHORT).show();
+                }
+            }));
+        } else {
+            recyclerView.setAdapter(new RecyclerViewAdapter(Utils.getImageFromDrawable(), this, new OnImageClickListener() {
+                @Override
+                public void onImageClick(int item) {
+                    Toast.makeText(MainActivity.this, (item + 1) + getString(R.string.image), Toast.LENGTH_SHORT).show();
+                }
+            }));
+        }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.onBackPressed();
-                return true;
-        }
-        return false;
+    @OnClick(R.id.organization)
+    public void organization() {
+        Toast.makeText(MainActivity.this, R.string.organization, Toast.LENGTH_SHORT).show();
     }
+
+    @OnClick(R.id.problem_status)
+    public void problemStatus() {
+        Toast.makeText(MainActivity.this, R.string.problem_status, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.created)
+    public void created() {
+        Toast.makeText(MainActivity.this, R.string.created, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.registered)
+    public void registered() {
+        Toast.makeText(MainActivity.this, R.string.registered, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.solved)
+    public void solved() {
+        Toast.makeText(MainActivity.this, R.string.solve, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.responsible)
+    public void responsible() {
+        Toast.makeText(MainActivity.this, R.string.responsible, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.problem_description)
+    public void description() {
+        Toast.makeText(MainActivity.this, R.string.description, Toast.LENGTH_SHORT).show();
+    }
+
 }

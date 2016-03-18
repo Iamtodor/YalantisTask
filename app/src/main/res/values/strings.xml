@@ -1,16 +1,19 @@
 <resources>
     <string name="app_name">YalantisTask1</string>
     <string name="toolbar_title">CE-1257218</string>
-    <string name="organization">Комунальне підприємство</string>
-    <string name="problem_status">В роботі</string>
-    <string name="created">Створено</string>
-    <string name="problem_created_date">25 лютого 2016</string>
-    <string name="registered">Зареєстровано</string>
-    <string name="problem_registered_date">26 лютого 2016</string>
-    <string name="solve">Вирішити до</string>
-    <string name="problem_solve_date">29 лютого 2016</string>
-    <string name="responsible">Відповідальний</string>
-    <string name="responsible_organ">Дніпропетровський МВК()</string>
-    <string name="problem_description">Відчинений люк (біля рекламного щита), в районі повороту 18
-        та 19 трамваєм на проспект Миру с Донецького шосе</string>
+    <string name="organization">Municipal Enterprise</string>
+    <string name="problem_status">In progress</string>
+    <string name="created">Created</string>
+    <string name="problem_created_date">25 february 2016</string>
+    <string name="registered">Registered</string>
+    <string name="problem_registered_date">26 february 2016</string>
+    <string name="solve">Solve to</string>
+    <string name="problem_solve_date">29 february 2016</string>
+    <string name="responsible">Responsible</string>
+    <string name="responsible_organ">Dnipropetrovsk MVK()</string>
+    <string name="problem_description">Opened natch (near the billboard), the area of 18th and 19th
+        trams near the turn to the Mir Avenue with the Donetsk highway</string>
+    <string name="image">" image"</string>
+    <string name="description">Description</string>
 </resources>
+

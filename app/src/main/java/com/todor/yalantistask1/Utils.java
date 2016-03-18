@@ -1,11 +1,15 @@
 package com.todor.yalantistask1;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public final class Utils {
 
-    public static List<String> getImageUrlList() {
+    public static List<String> getImageFromNetwork() {
         List<String> imageUrl = new ArrayList<>();
         imageUrl.add("https://files3.adme.ru/files/news/part_105/1051910/1957210-R3L8T8D-1000-5_1.jpg");
         imageUrl.add("https://files1.adme.ru/files/news/part_105/1051910/1962310-R3L8T8D-1000-pollok_za_rabotoy.jpg");
@@ -24,6 +28,19 @@ public final class Utils {
         imageUrl.add("https://files7.adme.ru/files/news/part_105/1051910/1973860-R3L8T8D-1000-in-orbit-installation-tom-s-saraceno-5.jpg");
         imageUrl.add("https://files1.adme.ru/files/news/part_105/1051910/1975560-R3L8T8D-1000-collage666.jpg");
         return imageUrl;
+    }
+
+    public static int[] getImageFromDrawable() {
+        return new int[]{R.drawable.image1,R.drawable.image2,R.drawable.image3,
+                R.drawable.image3,R.drawable.image4, R.drawable.image5, R.drawable.image6,
+                R.drawable.image7, R.drawable.image8};
+    }
+
+    public static boolean isOn(Context context) {
+        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
 }

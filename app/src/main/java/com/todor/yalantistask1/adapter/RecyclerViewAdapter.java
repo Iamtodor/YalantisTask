@@ -18,9 +18,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Context context;
     private List<String> imagesUrl;
     private OnImageClickListener onImageClickListener;
+    private int[] imageIds;
 
     public RecyclerViewAdapter(List<String> imagesUrl, Context context, OnImageClickListener onImageClickListener) {
         this.imagesUrl = imagesUrl;
+        this.context = context;
+        this.onImageClickListener = onImageClickListener;
+    }
+
+    public RecyclerViewAdapter(int[] imagesUrl, Context context, OnImageClickListener onImageClickListener) {
+        this.imageIds = imagesUrl;
         this.context = context;
         this.onImageClickListener = onImageClickListener;
     }
@@ -32,15 +39,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(imagesUrl.get(position), onImageClickListener);
-        Picasso.with(context)
-                .load(imagesUrl.get(position))
-                .into(holder.image);
+        if (imagesUrl != null && imagesUrl.size() > 0) {
+            holder.bind(onImageClickListener);
+            Picasso.with(context)
+                    .load(imagesUrl.get(position))
+                    .into(holder.image);
+        } else if (imageIds != null && imageIds.length > 0) {
+            holder.bind(onImageClickListener);
+            Picasso.with(context)
+                    .load(imageIds[position])
+                    .into(holder.image);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return imagesUrl.size();
+        if (imagesUrl != null)
+            return imagesUrl.size();
+        else
+            return imageIds.length;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -52,7 +69,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             image = (ImageView) itemView;
         }
 
-        public void bind(final String imageUrl, final OnImageClickListener onImageClickListener) {
+        public void bind(final OnImageClickListener onImageClickListener) {
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -60,5 +77,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 }
             });
         }
+
     }
 }
