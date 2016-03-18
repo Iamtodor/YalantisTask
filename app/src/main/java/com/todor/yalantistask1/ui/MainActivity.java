@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void setupView() {
+        //suppose this view will be inflated by server data, so I decided to out this in separate method by SOLID
         organization.setText(R.string.organization);
         problemStatus.setText(R.string.problem_status);
         createdDate.setText(R.string.problem_created_date);
@@ -74,7 +75,7 @@ public class MainActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.addItemDecoration(new ItemDecorator());
 
-        if(Utils.isOn(this)) {
+        if (Utils.isOn(this)) {
             recyclerView.setAdapter(new RecyclerViewAdapter(Utils.getImageFromNetwork(), this, new OnImageClickListener() {
                 @Override
                 public void onImageClick(int item) {
