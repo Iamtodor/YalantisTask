@@ -6,11 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.todor.yalantistask1.R;
 import com.todor.yalantistask1.Utils;
 import com.todor.yalantistask1.adapter.ItemDecorator;
 import com.todor.yalantistask1.adapter.RecyclerViewAdapter;
+import com.todor.yalantistask1.interfaces.OnImageClickListener;
 
 import butterknife.Bind;
 
@@ -60,7 +62,12 @@ public class MainActivity extends BaseActivity {
     public void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.addItemDecoration(new ItemDecorator());
-        recyclerView.setAdapter(new RecyclerViewAdapter(Utils.getImageUrlList(), this));
+        recyclerView.setAdapter(new RecyclerViewAdapter(Utils.getImageUrlList(), this, new OnImageClickListener() {
+            @Override
+            public void onImageClick(int item) {
+                Toast.makeText(MainActivity.this, (item + 1) + " image", Toast.LENGTH_SHORT).show();
+            }
+        }));
     }
 
     @Override
@@ -71,4 +78,5 @@ public class MainActivity extends BaseActivity {
                 return true;
         }
         return false;
-    }}
+    }
+}

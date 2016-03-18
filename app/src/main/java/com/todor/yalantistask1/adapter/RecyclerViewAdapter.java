@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.todor.yalantistask1.R;
+import com.todor.yalantistask1.interfaces.OnImageClickListener;
 
 import java.util.List;
 
@@ -16,10 +17,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private Context context;
     private List<String> imagesUrl;
+    private OnImageClickListener onImageClickListener;
 
-    public RecyclerViewAdapter(List<String> imagesUrl, Context context) {
+    public RecyclerViewAdapter(List<String> imagesUrl, Context context, OnImageClickListener onImageClickListener) {
         this.imagesUrl = imagesUrl;
         this.context = context;
+        this.onImageClickListener = onImageClickListener;
     }
 
     @Override
@@ -29,6 +32,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.bind(imagesUrl.get(position), onImageClickListener);
         Picasso.with(context)
                 .load(imagesUrl.get(position))
                 .into(holder.image);
@@ -46,7 +50,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public ViewHolder(View itemView) {
             super(itemView);
             image = (ImageView) itemView;
+        }
 
+        public void bind(final String imageUrl, final OnImageClickListener onImageClickListener) {
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onImageClickListener.onImageClick(getAdapterPosition());
+                }
+            });
         }
     }
 }
