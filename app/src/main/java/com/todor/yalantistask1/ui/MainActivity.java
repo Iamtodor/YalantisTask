@@ -19,6 +19,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
 
+    //[Comment] RecyclerVIew should not have left and right margin
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.organization) TextView organization;
     @Bind(R.id.problem_status) TextView problemStatus;
@@ -124,7 +125,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.problem_description)
     public void description() {
-        Toast.makeText(MainActivity.this, R.string.description, Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, R.string.description, Toast.LENGTH_SHORT).show(); //[Comment] You can make all these methods in one.
     }
 
 }

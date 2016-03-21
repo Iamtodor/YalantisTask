@@ -10,4 +10,5 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     public ApplicationTest() {
         super(Application.class);
     }
+    //[Comment] Dead code. It's doing nothing
 }

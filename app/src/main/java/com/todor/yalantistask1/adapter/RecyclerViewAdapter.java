@@ -16,7 +16,7 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private Context context;
-    private List<String> imagesUrl;
+    private List<String> imagesUrl; //[Comment] Wrong names mImagesUrl, mImagesIds
     private OnImageClickListener onImageClickListener;
     private int[] imageIds;
 
@@ -55,14 +55,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() {
         if (imagesUrl != null)
-            return imagesUrl.size();
+            return imagesUrl.size(); //[Comment] Looks not good. It  return imagesUrl != null ? imagesUrl.size() : imageIds.length;
         else
             return imageIds.length;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView image;
+        ImageView image; //[Comment] Wrong visibility modifier
 
         public ViewHolder(View itemView) {
             super(itemView);

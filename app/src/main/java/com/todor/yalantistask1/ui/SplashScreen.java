@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.Calendar;
+
 public class SplashScreen extends AppCompatActivity {
 
     @Override
@@ -16,6 +18,6 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
                 startActivity(new Intent(SplashScreen.this, MainActivity.class));
             }
-        }, 1000);
+        }, 1000); //[Comment] It should be constant
     }
 }

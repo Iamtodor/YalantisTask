@@ -26,7 +26,7 @@ public final class Utils {
         imageUrl.add("https://files6.adme.ru/files/news/part_105/1051910/1972210-R3L8T8D-1000-collage555.jpg");
         imageUrl.add("https://files6.adme.ru/files/news/part_105/1051910/1975960-R3L8T8D-1000-virtoofoto_ha.jpg");
         imageUrl.add("https://files7.adme.ru/files/news/part_105/1051910/1973860-R3L8T8D-1000-in-orbit-installation-tom-s-saraceno-5.jpg");
-        imageUrl.add("https://files1.adme.ru/files/news/part_105/1051910/1975560-R3L8T8D-1000-collage666.jpg");
+        imageUrl.add("https://files1.adme.ru/files/news/part_105/1051910/1975560-R3L8T8D-1000-collage666.jpg"); //[Comment] Looks like hardcode. You can put strings into res directory
         return imageUrl;
     }
 
@@ -36,7 +36,7 @@ public final class Utils {
                 R.drawable.image7, R.drawable.image8};
     }
 
-    public static boolean isOn(Context context) {
+    public static boolean isOn(Context context) { //[Comment] isOnline will be more informative
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
