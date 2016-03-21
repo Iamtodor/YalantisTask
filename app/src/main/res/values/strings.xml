@@ -15,5 +15,23 @@
         trams near the turn to the Mir Avenue with the Donetsk highway</string>
     <string name="image">" image"</string>
     <string name="description">Description</string>
+    <string-array name="images_from_network">
+        <item>https://files3.adme.ru/files/news/part_105/1051910/1957210-R3L8T8D-1000-5_1.jpg</item>
+        <item>https://files1.adme.ru/files/news/part_105/1051910/1962310-R3L8T8D-1000-pollok_za_rabotoy.jpg</item>
+        <item>https://files6.adme.ru/files/news/part_105/1051910/1960610-R3L8T8D-1000-collage22.jpg</item>
+        <item>https://files3.adme.ru/files/news/part_105/1051910/1961660-R3L8T8D-1000-duchamp-fountain.jpg</item>
+        <item>https://files1.adme.ru/files/news/part_105/1051910/2049160-R3L8T8D-1000-20090517010837The_Persistence_of_Memory.jpg</item>
+        <item>https://files1.adme.ru/files/news/part_105/1051910/2049560-R3L8T8D-1000-Jacek_Yerka_01.jpg</item>
+        <item>https://files7.adme.ru/files/news/part_105/1051910/1963460-R3L8T8D-1000-virtoofoto_hiper.jpg</item>
+        <item>https://files1.adme.ru/files/news/part_105/1051910/1963560-R3L8T8D-1000-collage333.jpg</item>
+        <item>https://files4.adme.ru/files/news/part_105/1051910/2052510-R3L8T8D-1000-collage67677.jpg</item>
+        <item>https://files6.adme.ru/files/news/part_105/1051910/1969010-R3L8T8D-1000-collage44.jpg</item>
+        <item>https://files8.adme.ru/files/news/part_105/1051910/1970310-R3L8T8D-1000-collage55.jpg</item>
+        <item>https://files2.adme.ru/files/news/part_105/1051910/1970410-R3L8T8D-1000-Knigi.jpg</item>
+        <item>https://files6.adme.ru/files/news/part_105/1051910/1972210-R3L8T8D-1000-collage555.jpg</item>
+        <item>https://files6.adme.ru/files/news/part_105/1051910/1975960-R3L8T8D-1000-virtoofoto_ha.jpg</item>
+        <item>https://files7.adme.ru/files/news/part_105/1051910/1973860-R3L8T8D-1000-in-orbit-installation-tom-s-saraceno-5.jpg</item>
+        <item>https://files1.adme.ru/files/news/part_105/1051910/1975560-R3L8T8D-1000-collage666.jpg</item>
+    </string-array>
 </resources>
 

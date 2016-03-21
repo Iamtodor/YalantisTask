@@ -5,5 +5,5 @@
     android:layout_height="170dp"
     android:scaleType="centerCrop"/>
 
-<!-- [Comment] Hardcode -->
+    <!-- [Comment] Hardcode -->
 

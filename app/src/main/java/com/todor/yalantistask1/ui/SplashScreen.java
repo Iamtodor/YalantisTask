@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
-import java.util.Calendar;
-
 public class SplashScreen extends AppCompatActivity {
+
+    public static final int DELAY_MILLIS = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +18,6 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
                 startActivity(new Intent(SplashScreen.this, MainActivity.class));
             }
-        }, 1000); //[Comment] It should be constant
+        }, DELAY_MILLIS);
     }
 }

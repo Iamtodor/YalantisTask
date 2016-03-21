@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.todor.yalantistask1.R;
 import com.todor.yalantistask1.Utils;
@@ -76,18 +75,18 @@ public class MainActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.addItemDecoration(new ItemDecorator());
 
-        if (Utils.isOn(this)) {
-            recyclerView.setAdapter(new RecyclerViewAdapter(Utils.getImageFromNetwork(), this, new OnImageClickListener() {
+        if (Utils.isOnline(this)) {
+            recyclerView.setAdapter(new RecyclerViewAdapter(Utils.getImageFromNetwork(this), this, new OnImageClickListener() {
                 @Override
                 public void onImageClick(int item) {
-                    Toast.makeText(MainActivity.this, (item + 1) + getString(R.string.image), Toast.LENGTH_SHORT).show();
+                    toast((item + 1) + getString(R.string.image));
                 }
             }));
         } else {
             recyclerView.setAdapter(new RecyclerViewAdapter(Utils.getImageFromDrawable(), this, new OnImageClickListener() {
                 @Override
                 public void onImageClick(int item) {
-                    Toast.makeText(MainActivity.this, (item + 1) + getString(R.string.image), Toast.LENGTH_SHORT).show();
+                    toast((item + 1) + getString(R.string.image));
                 }
             }));
         }
@@ -95,37 +94,37 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.organization)
     public void organization() {
-        Toast.makeText(MainActivity.this, R.string.organization, Toast.LENGTH_SHORT).show();
+        toast(R.string.organization);
     }
 
     @OnClick(R.id.problem_status)
     public void problemStatus() {
-        Toast.makeText(MainActivity.this, R.string.problem_status, Toast.LENGTH_SHORT).show();
+        toast(R.string.problem_status);
     }
 
     @OnClick(R.id.created)
     public void created() {
-        Toast.makeText(MainActivity.this, R.string.created, Toast.LENGTH_SHORT).show();
+        toast(R.string.created);
     }
 
     @OnClick(R.id.registered)
     public void registered() {
-        Toast.makeText(MainActivity.this, R.string.registered, Toast.LENGTH_SHORT).show();
+        toast(R.string.registered);
     }
 
     @OnClick(R.id.solved)
     public void solved() {
-        Toast.makeText(MainActivity.this, R.string.solve, Toast.LENGTH_SHORT).show();
+        toast(R.string.solve);
     }
 
     @OnClick(R.id.responsible)
     public void responsible() {
-        Toast.makeText(MainActivity.this, R.string.responsible, Toast.LENGTH_SHORT).show();
+        toast(R.string.responsible);
     }
 
     @OnClick(R.id.problem_description)
     public void description() {
-        Toast.makeText(MainActivity.this, R.string.description, Toast.LENGTH_SHORT).show(); //[Comment] You can make all these methods in one.
+        toast(R.string.description);
     }
 
 }

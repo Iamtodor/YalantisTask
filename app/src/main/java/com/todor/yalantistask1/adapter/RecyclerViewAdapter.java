@@ -16,18 +16,18 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private Context context;
-    private List<String> imagesUrl; //[Comment] Wrong names mImagesUrl, mImagesIds
+    private List<String> mImagesUrl;
     private OnImageClickListener onImageClickListener;
-    private int[] imageIds;
+    private int[] mImageIds;
 
     public RecyclerViewAdapter(List<String> imagesUrl, Context context, OnImageClickListener onImageClickListener) {
-        this.imagesUrl = imagesUrl;
+        this.mImagesUrl = imagesUrl;
         this.context = context;
         this.onImageClickListener = onImageClickListener;
     }
 
     public RecyclerViewAdapter(int[] imagesUrl, Context context, OnImageClickListener onImageClickListener) {
-        this.imageIds = imagesUrl;
+        this.mImageIds = imagesUrl;
         this.context = context;
         this.onImageClickListener = onImageClickListener;
     }
@@ -39,30 +39,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (imagesUrl != null && imagesUrl.size() > 0) {
+        if (mImagesUrl != null && mImagesUrl.size() > 0) {
             holder.bind(onImageClickListener);
             Picasso.with(context)
-                    .load(imagesUrl.get(position))
+                    .load(mImagesUrl.get(position))
                     .into(holder.image);
-        } else if (imageIds != null && imageIds.length > 0) {
+        } else if (mImageIds != null && mImageIds.length > 0) {
             holder.bind(onImageClickListener);
             Picasso.with(context)
-                    .load(imageIds[position])
+                    .load(mImageIds[position])
                     .into(holder.image);
         }
     }
 
     @Override
     public int getItemCount() {
-        if (imagesUrl != null)
-            return imagesUrl.size(); //[Comment] Looks not good. It  return imagesUrl != null ? imagesUrl.size() : imageIds.length;
-        else
-            return imageIds.length;
+        return mImagesUrl != null ? mImagesUrl.size() : mImageIds.length;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView image; //[Comment] Wrong visibility modifier
+        private ImageView image; //[Comment] Wrong visibility modifier
 
         public ViewHolder(View itemView) {
             super(itemView);
