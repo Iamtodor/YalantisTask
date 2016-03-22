@@ -37,4 +37,10 @@
         <item name="android:gravity">end</item>
     </style>
 
+    <style name="image_view_item">
+        <item name="android:layout_width">@dimen/image_view_size</item>
+        <item name="android:layout_height">@dimen/image_view_size</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
 </resources>
