@@ -7,4 +7,5 @@
     <color name="layout_background">#EBEBEB</color>
     <color name="progress_color">#F89900</color>
     <color name="category_text_color">#999999</color>
+    <color name="text_header_color">#cad6e4</color>
 </resources>

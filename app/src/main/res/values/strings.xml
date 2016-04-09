@@ -33,5 +33,20 @@
         <item>https://files7.adme.ru/files/news/part_105/1051910/1973860-R3L8T8D-1000-in-orbit-installation-tom-s-saraceno-5.jpg</item>
         <item>https://files1.adme.ru/files/news/part_105/1051910/1975560-R3L8T8D-1000-collage666.jpg</item>
     </string-array>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="all_handling">All handles</string>
+    <string name="map_handling">Map handles</string>
+    <string name="log_in">Log in</string>
 </resources>
 
