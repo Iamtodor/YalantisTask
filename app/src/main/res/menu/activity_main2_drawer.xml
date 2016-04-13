@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:id="@+id/grp1" android:checkableBehavior="single" >
+    <group
+        android:id="@+id/grp1"
+        android:checkableBehavior="single">
         <item
-            android:id="@+id/navigation_item_1"
+            android:id="@+id/all_handling"
             android:checked="true"
             android:icon="@drawable/ic_format_list_bulleted"
-            android:title="@string/all_handling" />
+            android:title="@string/all_handling"/>
         <item
-            android:id="@+id/navigation_item_2"
+            android:id="@+id/map_handling"
             android:checked="true"
             android:icon="@drawable/ic_map_marker"
-            android:title="@string/map_handling" />
+            android:title="@string/map_handling"/>
     </group>
 
-    <group android:id="@+id/grp2" android:checkableBehavior="single" >
+    <group
+        android:id="@+id/grp2"
+        android:checkableBehavior="single">
         <item
-            android:id="@+id/navigation_item_3"
-            android:title="@string/log_in" />
+            android:id="@+id/log_in"
+            android:title="@string/log_in"/>
     </group>
 </menu>

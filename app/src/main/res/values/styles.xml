@@ -44,4 +44,9 @@
         <item name="android:scaleType">centerCrop</item>
     </style>
 
+    <style name="navigation_drawer_style">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>
