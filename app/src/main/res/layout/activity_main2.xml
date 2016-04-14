@@ -28,27 +28,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:gravity="bottom"
-            android:orientation="vertical"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="@dimen/footer_margin_bottom"
+            android:layout_marginLeft="@dimen/footer_margin_left"
+            android:layout_marginStart="@dimen/footer_margin_left"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/made_with_love"
                 android:textColor="@android:color/black"
-                android:textSize="14sp"/>
+                android:textSize="@dimen/footer_text_size"/>
 
             <TextView
+                android:id="@+id/made_by"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="@dimen/made_by_margin_top"
                 android:text="@string/made_by"
-                android:id="@+id/made_by"
                 android:textColor="@android:color/black"
-                android:textSize="14sp"/>
+                android:textSize="@dimen/footer_text_size"/>
 
         </LinearLayout>
 

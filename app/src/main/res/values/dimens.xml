@@ -16,4 +16,12 @@
          https://developer.android.com/design/patterns/navigation-drawer.html -->
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="footer_margin_bottom">8dp</dimen>
+    <dimen name="footer_margin_left">16dp</dimen>
+    <dimen name="footer_text_size">14sp</dimen>
+    <dimen name="made_by_margin_top">3dp</dimen>
+    <dimen name="header_margin_bottom">30dp</dimen>
+    <dimen name="header_margin_left">20dp</dimen>
+    <dimen name="header_margin_top">50dp</dimen>
+    <dimen name="header_text_size">28sp</dimen>
 </resources>

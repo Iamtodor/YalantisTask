@@ -1,16 +1,13 @@
 package com.todor.yalantistask1.ui;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
@@ -28,7 +25,10 @@ import butterknife.Bind;
 public class Main2Activity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    @Bind(R.id.made_by) TextView footerMadeBy;
+    @Bind(R.id.made_by) protected       TextView       footerMadeBy;
+    @Bind(R.id.toolbar) protected       Toolbar        toolbar;
+    @Bind(R.id.drawer_layout) protected DrawerLayout   drawer;
+    @Bind(R.id.nav_view) protected      NavigationView navigationView;
 
     @Override
     protected int getContentViewId() {
@@ -39,25 +39,13 @@ public class Main2Activity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         setColor(footerMadeBy, footerMadeBy.getText().toString());
@@ -110,9 +98,11 @@ public class Main2Activity extends BaseActivity
         switch (id) {
             case R.id.all_handling:
 
+                getSupportActionBar().setTitle(R.string.all_handling);
                 break;
             case R.id.map_handling:
 
+                getSupportActionBar().setTitle(R.string.map_handling);
                 break;
 
             case R.id.log_in:
