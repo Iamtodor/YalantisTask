@@ -1,37 +1,42 @@
-package com.todor.yalantistask1.ui;
+package com.todor.yalantistask1.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.todor.yalantistask1.utils.DialogFactory;
 
 import butterknife.ButterKnife;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseFragment extends Fragment {
 
     protected final String TAG = this.getClass().getSimpleName();
     private AlertDialog loader;
 
     protected abstract int getContentViewId();
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(getContentViewId());
-        ButterKnife.bind(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(getContentViewId(), container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroyView() {
         ButterKnife.unbind(this);
-        super.onDestroy();
+        super.onDestroyView();
     }
 
     protected void toast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
     }
 
     protected void toast(@StringRes int msg) {
@@ -40,7 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void showLoader() {
         if (loader == null) {
-            loader = DialogFactory.getLoadingDialog(this).create();
+            loader = DialogFactory.getLoadingDialog(getActivity()).create();
         }
         loader.show();
     }
@@ -50,4 +55,5 @@ public abstract class BaseActivity extends AppCompatActivity {
             loader.hide();
         }
     }
+
 }

@@ -9,23 +9,23 @@ import com.todor.yalantistask1.App;
 
 public class ItemDecorator extends RecyclerView.ItemDecoration {
 
-    private int space;
+    private int mSpace;
 
     public ItemDecorator() {
-        space = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, App.getContext().getResources().getDisplayMetrics());
+        mSpace = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, App.getContext().getResources().getDisplayMetrics());
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (parent.getChildAdapterPosition(view) == 0) {
             outRect.left = 0;
-            outRect.right = space;
+            outRect.right = mSpace;
         } else if (parent.getChildAdapterPosition(view) == parent.getAdapter().getItemCount() - 1) {
             outRect.right = 0;
-            outRect.left = space;
+            outRect.left = mSpace;
         } else {
-            outRect.left = space;
-            outRect.right = space;
+            outRect.left = mSpace;
+            outRect.right = mSpace;
         }
     }
 

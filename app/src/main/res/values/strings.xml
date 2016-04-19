@@ -45,8 +45,8 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
-    <string name="all_handling">All handles</string>
-    <string name="map_handling">Map handles</string>
+    <string name="all_requests">All requests</string>
+    <string name="map_requests">Map requests</string>
     <string name="log_in">Log in</string>
     <string name="made_with_love">Made with love</string>
     <string name="made_by">IT Ruh Dnipro and Yalantis</string>

@@ -13,23 +13,23 @@ import com.todor.yalantistask1.interfaces.OnImageClickListener;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class ImageTaskRecyclerViewAdapter extends RecyclerView.Adapter<ImageTaskRecyclerViewAdapter.ViewHolder> {
 
-    private Context context;
+    private Context mContext;
     private List<String> mImagesUrl;
-    private OnImageClickListener onImageClickListener;
+    private OnImageClickListener mOnImageClickListener;
     private int[] mImageIds;
 
-    public RecyclerViewAdapter(List<String> imagesUrl, Context context, OnImageClickListener onImageClickListener) {
+    public ImageTaskRecyclerViewAdapter(List<String> imagesUrl, Context mContext, OnImageClickListener onImageClickListener) {
         this.mImagesUrl = imagesUrl;
-        this.context = context;
-        this.onImageClickListener = onImageClickListener;
+        this.mContext = mContext;
+        this.mOnImageClickListener = onImageClickListener;
     }
 
-    public RecyclerViewAdapter(int[] imagesUrl, Context context, OnImageClickListener onImageClickListener) {
+    public ImageTaskRecyclerViewAdapter(int[] imagesUrl, Context mContext, OnImageClickListener onImageClickListener) {
         this.mImageIds = imagesUrl;
-        this.context = context;
-        this.onImageClickListener = onImageClickListener;
+        this.mContext = mContext;
+        this.mOnImageClickListener = onImageClickListener;
     }
 
     @Override
@@ -40,13 +40,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (mImagesUrl != null && mImagesUrl.size() > 0) {
-            holder.bind(onImageClickListener);
-            Picasso.with(context)
+            holder.bind(mOnImageClickListener);
+            Picasso.with(mContext)
                     .load(mImagesUrl.get(position))
                     .into(holder.image);
         } else if (mImageIds != null && mImageIds.length > 0) {
-            holder.bind(onImageClickListener);
-            Picasso.with(context)
+            holder.bind(mOnImageClickListener);
+            Picasso.with(mContext)
                     .load(mImageIds[position])
                     .into(holder.image);
         }

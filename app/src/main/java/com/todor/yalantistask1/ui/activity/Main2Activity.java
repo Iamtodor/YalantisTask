@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.ui;
+package com.todor.yalantistask1.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,6 +43,7 @@ public class Main2Activity extends BaseActivity
         super.onCreate(savedInstanceState);
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.all_requests);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -107,11 +108,11 @@ public class Main2Activity extends BaseActivity
         switch (id) {
             case R.id.all_handling:
 
-                getSupportActionBar().setTitle(R.string.all_handling);
+                getSupportActionBar().setTitle(R.string.all_requests);
                 break;
             case R.id.map_handling:
 
-                getSupportActionBar().setTitle(R.string.map_handling);
+                getSupportActionBar().setTitle(R.string.map_requests);
                 break;
 
             case R.id.log_in:

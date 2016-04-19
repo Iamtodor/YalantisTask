@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.ui;
+package com.todor.yalantistask1.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +11,7 @@ import com.todor.yalantistask1.R;
 import com.todor.yalantistask1.utils.NetworkUtils;
 import com.todor.yalantistask1.utils.Utils;
 import com.todor.yalantistask1.adapter.ItemDecorator;
-import com.todor.yalantistask1.adapter.RecyclerViewAdapter;
+import com.todor.yalantistask1.adapter.ImageTaskRecyclerViewAdapter;
 import com.todor.yalantistask1.interfaces.OnImageClickListener;
 
 import butterknife.Bind;
@@ -77,14 +77,14 @@ public class MainActivity extends BaseActivity {
         recyclerView.addItemDecoration(new ItemDecorator());
 
         if (NetworkUtils.isOnline(this)) {
-            recyclerView.setAdapter(new RecyclerViewAdapter(Utils.getImageFromNetwork(this), this, new OnImageClickListener() {
+            recyclerView.setAdapter(new ImageTaskRecyclerViewAdapter(Utils.getImageFromNetwork(this), this, new OnImageClickListener() {
                 @Override
                 public void onImageClick(int item) {
                     toast((item + 1) + getString(R.string.image));
                 }
             }));
         } else {
-            recyclerView.setAdapter(new RecyclerViewAdapter(Utils.getImageFromDrawable(), this, new OnImageClickListener() {
+            recyclerView.setAdapter(new ImageTaskRecyclerViewAdapter(Utils.getImageFromDrawable(), this, new OnImageClickListener() {
                 @Override
                 public void onImageClick(int item) {
                     toast((item + 1) + getString(R.string.image));
