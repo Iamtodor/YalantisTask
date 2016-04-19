@@ -8,7 +8,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.todor.yalantistask1.R;
-import com.todor.yalantistask1.Utils;
+import com.todor.yalantistask1.utils.NetworkUtils;
+import com.todor.yalantistask1.utils.Utils;
 import com.todor.yalantistask1.adapter.ItemDecorator;
 import com.todor.yalantistask1.adapter.RecyclerViewAdapter;
 import com.todor.yalantistask1.interfaces.OnImageClickListener;
@@ -75,7 +76,7 @@ public class MainActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.addItemDecoration(new ItemDecorator());
 
-        if (Utils.isOnline(this)) {
+        if (NetworkUtils.isOnline(this)) {
             recyclerView.setAdapter(new RecyclerViewAdapter(Utils.getImageFromNetwork(this), this, new OnImageClickListener() {
                 @Override
                 public void onImageClick(int item) {

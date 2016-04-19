@@ -1,5 +1,6 @@
 package com.todor.yalantistask1.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -25,6 +26,8 @@ import butterknife.Bind;
 public class Main2Activity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String IT_RUH_DNIPRO = "http://www.itruh.dp.ua/";
+    public static final String YALANTIS      = "https://yalantis.com/";
     @Bind(R.id.made_by) protected       TextView       footerMadeBy;
     @Bind(R.id.toolbar) protected       Toolbar        toolbar;
     @Bind(R.id.drawer_layout) protected DrawerLayout   drawer;
@@ -63,7 +66,7 @@ public class Main2Activity extends BaseActivity
         ClickableSpan span1 = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-                // TODO: 14.04.16 it_hub link
+                startWebViewActivity(IT_RUH_DNIPRO);
             }
 
             @Override
@@ -76,7 +79,7 @@ public class Main2Activity extends BaseActivity
         ClickableSpan span2 = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-                // TODO: 14.04.16 yalantis_click
+                startWebViewActivity(YALANTIS);
             }
 
             @Override
@@ -90,6 +93,12 @@ public class Main2Activity extends BaseActivity
         str.setSpan(span2, 18, fulltext.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         footerMadeBy.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private void startWebViewActivity(String url) {
+        Intent intent = new Intent(Main2Activity.this, WebViewActivity.class);
+        intent.putExtra("url", url);
+        startActivity(intent);
     }
 
     @Override

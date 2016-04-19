@@ -1,8 +1,8 @@
-package com.todor.yalantistask1;
+package com.todor.yalantistask1.utils;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+
+import com.todor.yalantistask1.R;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,13 +17,6 @@ public final class Utils {
         return new int[]{R.drawable.image1, R.drawable.image2, R.drawable.image3,
                 R.drawable.image3, R.drawable.image4, R.drawable.image5, R.drawable.image6,
                 R.drawable.image7, R.drawable.image8};
-    }
-
-    public static boolean isOnline(Context context) {
-        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-        return (networkInfo != null && networkInfo.isConnected());
     }
 
 }
