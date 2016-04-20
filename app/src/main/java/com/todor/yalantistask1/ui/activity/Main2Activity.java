@@ -1,12 +1,13 @@
 package com.todor.yalantistask1.ui.activity;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -22,7 +23,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.todor.yalantistask1.R;
-import com.todor.yalantistask1.ui.fragment.OnTheGo;
+import com.todor.yalantistask1.adapter.ViewPagerAdapter;
+import com.todor.yalantistask1.ui.fragment.DoneFragment;
+import com.todor.yalantistask1.ui.fragment.OnTheGoFragment;
+import com.todor.yalantistask1.ui.fragment.OnTheWaitFragment;
 
 import butterknife.Bind;
 
@@ -35,6 +39,8 @@ public class Main2Activity extends BaseActivity
     @Bind(R.id.toolbar) protected Toolbar toolbar;
     @Bind(R.id.drawer_layout) protected DrawerLayout drawer;
     @Bind(R.id.nav_view) protected NavigationView navigationView;
+    @Bind(R.id.viewpager) protected ViewPager viewPager;
+    @Bind(R.id.tabs) protected TabLayout tabLayout;
 
     @Override
     protected int getContentViewId() {
@@ -48,8 +54,8 @@ public class Main2Activity extends BaseActivity
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.content, new OnTheGo());
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content, new OnTheGoFragment());
             transaction.commit();
             navigationView.setCheckedItem(R.id.all_handling);
             getSupportActionBar().setTitle(R.string.all_requests);
@@ -61,6 +67,8 @@ public class Main2Activity extends BaseActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+        setupViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
 
         setColor(footerMadeBy, footerMadeBy.getText().toString());
     }
@@ -104,6 +112,14 @@ public class Main2Activity extends BaseActivity
         str.setSpan(span2, 18, fulltext.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         footerMadeBy.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new OnTheGoFragment(), "On the go");
+        adapter.addFragment(new DoneFragment(), "Done");
+        adapter.addFragment(new OnTheWaitFragment(), "On the wait");
+        viewPager.setAdapter(adapter);
     }
 
     private void startWebViewActivity(String url) {

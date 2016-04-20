@@ -70,7 +70,7 @@ public class ImageTaskRecyclerViewAdapter extends RecyclerView.Adapter<ImageTask
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onImageClickListener.onImageClick(getAdapterPosition());
+                    onImageClickListener.onItemClick(getAdapterPosition());
                 }
             });
         }

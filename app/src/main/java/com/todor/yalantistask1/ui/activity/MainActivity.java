@@ -78,14 +78,14 @@ public class MainActivity extends BaseActivity {
         if (NetworkUtils.isOnline(this)) {
             recyclerView.setAdapter(new ImageTaskRecyclerViewAdapter(Utils.getImageFromNetwork(this), this, new OnItemClickListener() {
                 @Override
-                public void onImageClick(int item) {
+                public void onItemClick(int item) {
                     toast((item + 1) + getString(R.string.image));
                 }
             }));
         } else {
             recyclerView.setAdapter(new ImageTaskRecyclerViewAdapter(Utils.getImageFromDrawable(), this, new OnItemClickListener() {
                 @Override
-                public void onImageClick(int item) {
+                public void onItemClick(int item) {
                     toast((item + 1) + getString(R.string.image));
                 }
             }));

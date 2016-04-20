@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.todor.yalantistask1.R;
 import com.todor.yalantistask1.interfaces.OnItemClickListener;
 import com.todor.yalantistask1.model.Task;
@@ -72,7 +71,7 @@ public class OnTheGoAdapter extends RecyclerView.Adapter<OnTheGoAdapter.ViewHold
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onImageClickListener.onImageClick(getAdapterPosition());
+                    onImageClickListener.onItemClick(getAdapterPosition());
                 }
             });
         }
