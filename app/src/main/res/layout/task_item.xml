@@ -1,103 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:card_view="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginLeft="16dp"
-              android:layout_marginRight="16dp"
-              android:layout_marginTop="16dp"
-              android:background="@drawable/item_shape"
-              android:orientation="vertical">
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/activity_horizontal_margin"
+    card_view:cardCornerRadius="7dp">
 
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/item"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="7dp">
+        android:clickable="true"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/image_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@android:drawable/btn_star" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
+                android:layout_marginTop="@dimen/like_margin_top"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@android:drawable/btn_star"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/social"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        tools:text="5"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/text_header_color"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                    android:layout_width="@dimen/like_width"
+                    android:layout_height="@dimen/like_height"
+                    android:src="@drawable/social" />
 
                 <TextView
+                    android:id="@+id/like_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Комунальне підприємство"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="вул. Б.Кротова, 22, Дніпропетровськ"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="Лют. 08, 2016"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="7 днів"/>
-
-                </LinearLayout>
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/like_value_margin_left"
+                    android:layout_marginStart="@dimen/like_value_margin_left"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/like_value_text_size"
+                    tools:text="5" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+        <View
+            android:layout_width="@dimen/view_width"
+            android:layout_height="match_parent"
+            android:background="@color/text_header_color" />
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/item_content_margin"
+            android:layout_marginStart="@dimen/item_content_margin"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/item_header_margin_top"
+                android:textColor="@android:color/black"
+                tools:text="Комунальне підприємство" />
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/item_content_body_margin_top"
+                tools:text="вул. Б.Кротова, 22, Дніпропетровськ" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/item_footer_margin_right"
+                android:layout_marginRight="@dimen/item_footer_margin_right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:textStyle="bold"
+                    tools:text="Лют. 08, 2016" />
+
+                <TextView
+                    android:id="@+id/expected_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:textStyle="bold"
+                    tools:text="7 днів" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+

@@ -24,4 +24,14 @@
     <dimen name="header_margin_left">20dp</dimen>
     <dimen name="header_margin_top">50dp</dimen>
     <dimen name="header_text_size">28sp</dimen>
+    <dimen name="like_margin_top">50dp</dimen>
+    <dimen name="like_width">20dp</dimen>
+    <dimen name="like_height">20dp</dimen>
+    <dimen name="like_value_margin_left">10dp</dimen>
+    <dimen name="like_value_text_size">18sp</dimen>
+    <dimen name="view_width">1dp</dimen>
+    <dimen name="item_content_margin">30dp</dimen>
+    <dimen name="item_header_margin_top">20dp</dimen>
+    <dimen name="item_content_body_margin_top">30dp</dimen>
+    <dimen name="item_footer_margin_right">16dp</dimen>
 </resources>

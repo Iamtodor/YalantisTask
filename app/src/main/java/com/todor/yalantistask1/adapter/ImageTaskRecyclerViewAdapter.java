@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.todor.yalantistask1.R;
-import com.todor.yalantistask1.interfaces.OnImageClickListener;
+import com.todor.yalantistask1.interfaces.OnItemClickListener;
 
 import java.util.List;
 
@@ -17,16 +17,16 @@ public class ImageTaskRecyclerViewAdapter extends RecyclerView.Adapter<ImageTask
 
     private Context mContext;
     private List<String> mImagesUrl;
-    private OnImageClickListener mOnImageClickListener;
+    private OnItemClickListener mOnImageClickListener;
     private int[] mImageIds;
 
-    public ImageTaskRecyclerViewAdapter(List<String> imagesUrl, Context mContext, OnImageClickListener onImageClickListener) {
+    public ImageTaskRecyclerViewAdapter(List<String> imagesUrl, Context mContext, OnItemClickListener onImageClickListener) {
         this.mImagesUrl = imagesUrl;
         this.mContext = mContext;
         this.mOnImageClickListener = onImageClickListener;
     }
 
-    public ImageTaskRecyclerViewAdapter(int[] imagesUrl, Context mContext, OnImageClickListener onImageClickListener) {
+    public ImageTaskRecyclerViewAdapter(int[] imagesUrl, Context mContext, OnItemClickListener onImageClickListener) {
         this.mImageIds = imagesUrl;
         this.mContext = mContext;
         this.mOnImageClickListener = onImageClickListener;
@@ -66,7 +66,7 @@ public class ImageTaskRecyclerViewAdapter extends RecyclerView.Adapter<ImageTask
             image = (ImageView) itemView;
         }
 
-        public void bind(final OnImageClickListener onImageClickListener) {
+        public void bind(final OnItemClickListener onImageClickListener) {
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

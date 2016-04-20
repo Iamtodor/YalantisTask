@@ -1,5 +1,7 @@
 package com.todor.yalantistask1.ui.activity;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.todor.yalantistask1.R;
+import com.todor.yalantistask1.ui.fragment.OnTheGo;
 
 import butterknife.Bind;
 
@@ -27,11 +30,11 @@ public class Main2Activity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String IT_RUH_DNIPRO = "http://www.itruh.dp.ua/";
-    public static final String YALANTIS      = "https://yalantis.com/";
-    @Bind(R.id.made_by) protected       TextView       footerMadeBy;
-    @Bind(R.id.toolbar) protected       Toolbar        toolbar;
-    @Bind(R.id.drawer_layout) protected DrawerLayout   drawer;
-    @Bind(R.id.nav_view) protected      NavigationView navigationView;
+    public static final String YALANTIS = "https://yalantis.com/";
+    @Bind(R.id.made_by) protected TextView footerMadeBy;
+    @Bind(R.id.toolbar) protected Toolbar toolbar;
+    @Bind(R.id.drawer_layout) protected DrawerLayout drawer;
+    @Bind(R.id.nav_view) protected NavigationView navigationView;
 
     @Override
     protected int getContentViewId() {
@@ -43,7 +46,14 @@ public class Main2Activity extends BaseActivity
         super.onCreate(savedInstanceState);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.all_requests);
+
+        if (savedInstanceState == null) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.content, new OnTheGo());
+            transaction.commit();
+            navigationView.setCheckedItem(R.id.all_handling);
+            getSupportActionBar().setTitle(R.string.all_requests);
+        }
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

@@ -12,14 +12,13 @@ import com.todor.yalantistask1.utils.NetworkUtils;
 import com.todor.yalantistask1.utils.Utils;
 import com.todor.yalantistask1.adapter.ItemDecorator;
 import com.todor.yalantistask1.adapter.ImageTaskRecyclerViewAdapter;
-import com.todor.yalantistask1.interfaces.OnImageClickListener;
+import com.todor.yalantistask1.interfaces.OnItemClickListener;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
 
-    //[Comment] RecyclerVIew should not have left and right margin
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.organization) TextView organization;
     @Bind(R.id.problem_status) TextView problemStatus;
@@ -77,14 +76,14 @@ public class MainActivity extends BaseActivity {
         recyclerView.addItemDecoration(new ItemDecorator());
 
         if (NetworkUtils.isOnline(this)) {
-            recyclerView.setAdapter(new ImageTaskRecyclerViewAdapter(Utils.getImageFromNetwork(this), this, new OnImageClickListener() {
+            recyclerView.setAdapter(new ImageTaskRecyclerViewAdapter(Utils.getImageFromNetwork(this), this, new OnItemClickListener() {
                 @Override
                 public void onImageClick(int item) {
                     toast((item + 1) + getString(R.string.image));
                 }
             }));
         } else {
-            recyclerView.setAdapter(new ImageTaskRecyclerViewAdapter(Utils.getImageFromDrawable(), this, new OnImageClickListener() {
+            recyclerView.setAdapter(new ImageTaskRecyclerViewAdapter(Utils.getImageFromDrawable(), this, new OnItemClickListener() {
                 @Override
                 public void onImageClick(int item) {
                     toast((item + 1) + getString(R.string.image));
