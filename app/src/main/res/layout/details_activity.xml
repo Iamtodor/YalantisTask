@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/layout_background"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_margin"
+            android:layout_marginRight="@dimen/content_margin"
+            android:layout_marginTop="@dimen/content_margin"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/organization"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/title_text_size"
+                tools:text="@string/organization"/>
+
+            <TextView
+                android:id="@+id/problem_status"
+                style="@style/problem_status_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/problem_status"/>
+
+            <include
+                layout="@layout/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/divider_margin"/>
+
+            <LinearLayout
+                android:id="@+id/created"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/info_padding"
+                android:paddingTop="@dimen/info_padding">
+
+                <TextView
+                    style="@style/grey_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/created"/>
+
+                <TextView
+                    android:id="@+id/create_date"
+                    style="@style/black_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/problem_created_date"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/divider"/>
+
+            <LinearLayout
+                android:id="@+id/registered"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/info_padding"
+                android:paddingTop="@dimen/info_padding">
+
+                <TextView
+                    style="@style/grey_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/registered"/>
+
+                <TextView
+                    android:id="@+id/registered_date"
+                    style="@style/black_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/problem_registered_date"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/divider"/>
+
+            <LinearLayout
+                android:id="@+id/solved"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/info_padding"
+                android:paddingTop="@dimen/info_padding">
+
+                <TextView
+                    style="@style/grey_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/solve"/>
+
+                <TextView
+                    android:id="@+id/solve_date"
+                    style="@style/black_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/problem_solve_date"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/divider"/>
+
+            <LinearLayout
+                android:id="@+id/responsible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/info_padding"
+                android:paddingTop="@dimen/info_padding">
+
+                <TextView
+                    style="@style/grey_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/responsible"/>
+
+                <TextView
+                    android:id="@+id/responsible_organ"
+                    style="@style/black_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/responsible_organ"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/divider"/>
+
+            <TextView
+                android:id="@+id/problem_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/description_margin"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/common_text_size"
+                tools:text="@string/problem_description"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/recycler_view_margin_bottom"
+                android:layout_marginTop="@dimen/recycler_view_margin_top"
+                android:clipToPadding="false"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

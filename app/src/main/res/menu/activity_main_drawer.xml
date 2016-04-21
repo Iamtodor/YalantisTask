@@ -17,7 +17,7 @@
 
     <group
         android:id="@+id/grp2"
-        android:checkableBehavior="single">
+        android:checkableBehavior="none">
         <item
             android:id="@+id/log_in"
             android:title="@string/log_in"/>

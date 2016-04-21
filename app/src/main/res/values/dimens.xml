@@ -34,4 +34,7 @@
     <dimen name="item_header_margin_top">20dp</dimen>
     <dimen name="item_content_body_margin_top">30dp</dimen>
     <dimen name="item_footer_margin_right">16dp</dimen>
+    <dimen name="card_corner_radius">7dp</dimen>
+    <dimen name="progress_dialog_size">52dp</dimen>
+    <dimen name="progress_dialog_margin">8dp</dimen>
 </resources>

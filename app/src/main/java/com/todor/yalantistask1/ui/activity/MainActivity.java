@@ -1,33 +1,47 @@
 package com.todor.yalantistask1.ui.activity;
 
+import android.support.v4.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.todor.yalantistask1.R;
-import com.todor.yalantistask1.utils.NetworkUtils;
-import com.todor.yalantistask1.utils.Utils;
-import com.todor.yalantistask1.adapter.ItemDecorator;
-import com.todor.yalantistask1.adapter.ImageTaskRecyclerViewAdapter;
-import com.todor.yalantistask1.interfaces.OnItemClickListener;
+import com.todor.yalantistask1.adapter.ViewPagerAdapter;
+import com.todor.yalantistask1.ui.fragment.DoneFragment;
+import com.todor.yalantistask1.ui.fragment.InWorkFragment;
+import com.todor.yalantistask1.ui.fragment.OnTheWaitFragment;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.organization) TextView organization;
-    @Bind(R.id.problem_status) TextView problemStatus;
-    @Bind(R.id.create_date) TextView createdDate;
-    @Bind(R.id.registered_date) TextView registeredDate;
-    @Bind(R.id.solve_date) TextView solveDate;
-    @Bind(R.id.responsible_organ) TextView responsibleOrgan;
-    @Bind(R.id.problem_description) TextView problemDescription;
-    @Bind(R.id.recycler_view) RecyclerView recyclerView;
+    public static final String IT_RUH_DNIPRO = "http://www.itruh.dp.ua/";
+    public static final String YALANTIS = "https://yalantis.com/";
+    @Bind(R.id.made_by) protected TextView footerMadeBy;
+    @Bind(R.id.toolbar) protected Toolbar toolbar;
+    @Bind(R.id.drawer_layout) protected DrawerLayout drawer;
+    @Bind(R.id.nav_view) protected NavigationView navigationView;
+    @Bind(R.id.viewpager) protected ViewPager viewPager;
+    @Bind(R.id.tabs) protected TabLayout tabLayout;
 
     @Override
     protected int getContentViewId() {
@@ -37,94 +51,131 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupToolbar();
-        setupView();
-        setupRecyclerView();
+
+        setSupportActionBar(toolbar);
+
+        if (savedInstanceState == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content, new InWorkFragment());
+            transaction.commit();
+            navigationView.setCheckedItem(R.id.all_handling);
+            getSupportActionBar().setTitle(R.string.all_requests);
+        }
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
+        setupViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
+
+        setColor(footerMadeBy, footerMadeBy.getText().toString());
+    }
+
+    private void setColor(TextView view, String fulltext) {
+        view.setText(fulltext, TextView.BufferType.SPANNABLE);
+        Spannable str = (Spannable) view.getText();
+        str.setSpan(new UnderlineSpan(), 0, 13, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        str.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.progress_color)), 0, 13, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        str.setSpan(new UnderlineSpan(), 18, fulltext.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        str.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.progress_color)), 18, fulltext.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        ClickableSpan span1 = new ClickableSpan() {
+            @Override
+            public void onClick(View textView) {
+                startWebViewActivity(IT_RUH_DNIPRO);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setColor(ContextCompat.getColor(MainActivity.this, R.color.progress_color));
+            }
+        };
+
+        ClickableSpan span2 = new ClickableSpan() {
+            @Override
+            public void onClick(View textView) {
+                startWebViewActivity(YALANTIS);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setColor(ContextCompat.getColor(MainActivity.this, R.color.progress_color));
+            }
+        };
+
+        str.setSpan(span1, 0, 13, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        str.setSpan(span2, 18, fulltext.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        footerMadeBy.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new InWorkFragment(), "On the go");
+        adapter.addFragment(new DoneFragment(), "Done");
+        adapter.addFragment(new OnTheWaitFragment(), "On the wait");
+        viewPager.setAdapter(adapter);
+    }
+
+    private void startWebViewActivity(String url) {
+        Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+        intent.putExtra("url", url);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.all_handling:
+                // TODO: 22.04.16 all requests
+                getSupportActionBar().setTitle(R.string.all_requests);
+                break;
+            case R.id.map_handling:
+                // TODO: 22.04.16 map requests
+                getSupportActionBar().setTitle(R.string.map_requests);
+                break;
+            case R.id.log_in:
+                // TODO: 22.04.16 log in
+                break;
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.onBackPressed();
-                return true;
+        int id = item.getItemId();
+
+        if (id == R.id.some_item) {
+            // TODO: 22.04.16 handle click on some item
+            return true;
         }
-        return false;
+
+        return super.onOptionsItemSelected(item);
     }
-
-    public void setupToolbar() {
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.toolbar_title);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    public void setupView() {
-        //suppose this view will be inflated by server data, so I decided to out this in separate method by SOLID
-        organization.setText(R.string.organization);
-        problemStatus.setText(R.string.problem_status);
-        createdDate.setText(R.string.problem_created_date);
-        registeredDate.setText(R.string.problem_registered_date);
-        solveDate.setText(R.string.problem_solve_date);
-        responsibleOrgan.setText(R.string.responsible_organ);
-        problemDescription.setText(R.string.problem_description);
-    }
-
-    public void setupRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.addItemDecoration(new ItemDecorator());
-
-        if (NetworkUtils.isOnline(this)) {
-            recyclerView.setAdapter(new ImageTaskRecyclerViewAdapter(Utils.getImageFromNetwork(this), this, new OnItemClickListener() {
-                @Override
-                public void onItemClick(int item) {
-                    toast((item + 1) + getString(R.string.image));
-                }
-            }));
-        } else {
-            recyclerView.setAdapter(new ImageTaskRecyclerViewAdapter(Utils.getImageFromDrawable(), this, new OnItemClickListener() {
-                @Override
-                public void onItemClick(int item) {
-                    toast((item + 1) + getString(R.string.image));
-                }
-            }));
-        }
-    }
-
-    @OnClick(R.id.organization)
-    public void organization() {
-        toast(R.string.organization);
-    }
-
-    @OnClick(R.id.problem_status)
-    public void problemStatus() {
-        toast(R.string.problem_status);
-    }
-
-    @OnClick(R.id.created)
-    public void created() {
-        toast(R.string.created);
-    }
-
-    @OnClick(R.id.registered)
-    public void registered() {
-        toast(R.string.registered);
-    }
-
-    @OnClick(R.id.solved)
-    public void solved() {
-        toast(R.string.solve);
-    }
-
-    @OnClick(R.id.responsible)
-    public void responsible() {
-        toast(R.string.responsible);
-    }
-
-    @OnClick(R.id.problem_description)
-    public void description() {
-        toast(R.string.description);
-    }
-
 }

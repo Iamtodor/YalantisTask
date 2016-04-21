@@ -7,10 +7,10 @@
 
     <com.pnikosis.materialishprogress.ProgressWheel
         android:id="@+id/progress_wheel"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="@dimen/progress_dialog_size"
+        android:layout_height="@dimen/progress_dialog_size"
         android:layout_centerInParent="true"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/progress_dialog_margin"
         wheel:matProg_progressIndeterminate="true" />
 
 </RelativeLayout>
