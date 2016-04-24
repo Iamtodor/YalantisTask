@@ -1,5 +1,6 @@
 package com.todor.yalantistask1.ui.activity;
 
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class MainActivity extends BaseActivity
     public static final String IT_RUH_DNIPRO = "http://www.itruh.dp.ua/";
     public static final String YALANTIS = "https://yalantis.com/";
     @Bind(R.id.made_by) protected TextView footerMadeBy;
+    @Bind(R.id.toolbar_container) protected AppBarLayout appBarLayout;
     @Bind(R.id.toolbar) protected Toolbar toolbar;
     @Bind(R.id.drawer_layout) protected DrawerLayout drawer;
     @Bind(R.id.nav_view) protected NavigationView navigationView;
@@ -54,13 +56,13 @@ public class MainActivity extends BaseActivity
 
         setSupportActionBar(toolbar);
 
-        if (savedInstanceState == null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.content, new InWorkFragment());
-            transaction.commit();
-            navigationView.setCheckedItem(R.id.all_handling);
-            getSupportActionBar().setTitle(R.string.all_requests);
-        }
+//        if (savedInstanceState == null) {
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.replace(R.id.content, new InWorkFragment());
+//            transaction.commit();
+//            navigationView.setCheckedItem(R.id.all_handling);
+//            getSupportActionBar().setTitle(R.string.all_requests);
+//        }
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -177,5 +179,9 @@ public class MainActivity extends BaseActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public AppBarLayout getAppBar() {
+        return appBarLayout;
     }
 }

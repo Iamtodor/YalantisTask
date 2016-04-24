@@ -1,6 +1,7 @@
 package com.todor.yalantistask1.utils;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.todor.yalantistask1.R;
 import com.todor.yalantistask1.model.Task;
@@ -34,6 +35,10 @@ public final class Utils {
             mTasks.add(task);
         }
         return mTasks;
+    }
+
+    public static boolean isLollipop() {
+        return android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
 }
