@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.ui.activity;
+package com.todor.yalantistask.ui.activity;
 
 import android.support.design.widget.AppBarLayout;
 import android.content.Intent;
@@ -23,11 +23,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.todor.yalantistask1.R;
-import com.todor.yalantistask1.adapter.ViewPagerAdapter;
-import com.todor.yalantistask1.ui.fragment.DoneFragment;
-import com.todor.yalantistask1.ui.fragment.WorkFragment;
-import com.todor.yalantistask1.ui.fragment.WaitFragment;
+import com.todor.yalantistask.R;
+import com.todor.yalantistask.adapter.ViewPagerAdapter;
+import com.todor.yalantistask.ui.fragment.DoneFragment;
+import com.todor.yalantistask.ui.fragment.WorkFragment;
+import com.todor.yalantistask.ui.fragment.WaitFragment;
 
 import butterknife.Bind;
 

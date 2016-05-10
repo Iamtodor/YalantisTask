@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.ui.activity;
+package com.todor.yalantistask.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.StringRes;
@@ -6,7 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.todor.yalantistask1.utils.DialogFactory;
+import com.todor.yalantistask.utils.DialogFactory;
 
 import butterknife.ButterKnife;
 

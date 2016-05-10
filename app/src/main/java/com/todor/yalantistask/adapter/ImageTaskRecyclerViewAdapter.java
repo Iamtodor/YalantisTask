@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.adapter;
+package com.todor.yalantistask.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
-import com.todor.yalantistask1.R;
-import com.todor.yalantistask1.interfaces.OnItemClickListener;
+import com.todor.yalantistask.R;
+import com.todor.yalantistask.interfaces.OnItemClickListener;
 
 import java.util.List;
 

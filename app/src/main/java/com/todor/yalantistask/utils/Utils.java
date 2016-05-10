@@ -1,10 +1,10 @@
-package com.todor.yalantistask1.utils;
+package com.todor.yalantistask.utils;
 
 import android.content.Context;
 import android.os.Build;
 
-import com.todor.yalantistask1.R;
-import com.todor.yalantistask1.model.Task;
+import com.todor.yalantistask.R;
+import com.todor.yalantistask.model.Task;
 
 import java.util.ArrayList;
 import java.util.Arrays;

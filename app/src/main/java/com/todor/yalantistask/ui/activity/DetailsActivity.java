@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.ui.activity;
+package com.todor.yalantistask.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,12 +7,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.todor.yalantistask1.R;
-import com.todor.yalantistask1.utils.NetworkUtils;
-import com.todor.yalantistask1.utils.Utils;
-import com.todor.yalantistask1.adapter.ItemDecorator;
-import com.todor.yalantistask1.adapter.ImageTaskRecyclerViewAdapter;
-import com.todor.yalantistask1.interfaces.OnItemClickListener;
+import com.todor.yalantistask.R;
+import com.todor.yalantistask.utils.NetworkUtils;
+import com.todor.yalantistask.utils.Utils;
+import com.todor.yalantistask.adapter.ItemDecorator;
+import com.todor.yalantistask.adapter.ImageTaskRecyclerViewAdapter;
+import com.todor.yalantistask.interfaces.OnItemClickListener;
 
 import butterknife.Bind;
 import butterknife.OnClick;

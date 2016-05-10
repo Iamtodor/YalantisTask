@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.ui.activity;
+package com.todor.yalantistask.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

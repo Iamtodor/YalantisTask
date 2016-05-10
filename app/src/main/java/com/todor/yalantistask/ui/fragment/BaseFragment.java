@@ -1,16 +1,18 @@
-package com.todor.yalantistask1.ui.fragment;
+package com.todor.yalantistask.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.todor.yalantistask1.utils.DialogFactory;
+import com.todor.yalantistask.utils.DialogFactory;
 
 import butterknife.ButterKnife;
 
@@ -54,6 +56,18 @@ public abstract class BaseFragment extends Fragment {
         if (loader != null) {
             loader.hide();
         }
+    }
+
+    protected void setFabBehavior(RecyclerView recyclerView, final FloatingActionButton fab) {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 && fab.isShown())
+                    fab.hide();
+                else if (dy < 0 && !fab.isShown())
+                    fab.show();
+            }
+        });
     }
 
 }

@@ -1,11 +1,12 @@
-package com.todor.yalantistask1.adapter;
+package com.todor.yalantistask.adapter;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
 
-import com.todor.yalantistask1.App;
+import com.todor.yalantistask.App;
+
 
 public class ItemDecorator extends RecyclerView.ItemDecoration {
 

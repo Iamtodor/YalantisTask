@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.utils;
+package com.todor.yalantistask.utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -6,7 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.todor.yalantistask1.R;
+import com.todor.yalantistask.R;
 
 public class DialogFactory {
 

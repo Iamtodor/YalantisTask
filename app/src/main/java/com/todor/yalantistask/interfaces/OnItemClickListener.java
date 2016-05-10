@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.interfaces;
+package com.todor.yalantistask.interfaces;
 
 public interface OnItemClickListener {
     void onItemClick(int position);

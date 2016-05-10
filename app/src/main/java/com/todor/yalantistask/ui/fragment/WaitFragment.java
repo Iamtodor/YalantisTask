@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.ui.fragment;
+package com.todor.yalantistask.ui.fragment;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -6,11 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.todor.yalantistask1.R;
-import com.todor.yalantistask1.adapter.WorkAdapter;
-import com.todor.yalantistask1.interfaces.OnItemClickListener;
-import com.todor.yalantistask1.model.Task;
-import com.todor.yalantistask1.utils.Utils;
+import com.todor.yalantistask.R;
+import com.todor.yalantistask.adapter.WorkAdapter;
+import com.todor.yalantistask.interfaces.OnItemClickListener;
+import com.todor.yalantistask.model.Task;
+import com.todor.yalantistask.utils.Utils;
 
 import java.util.List;
 
@@ -37,19 +37,7 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new WorkAdapter(getActivity(), mTasks, this));
 
-        setFabBehavior();
-    }
-
-    private void setFabBehavior() {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 && fab.isShown())
-                    fab.hide();
-                else if (dy < 0 && !fab.isShown())
-                    fab.show();
-            }
-        });
+        setFabBehavior(recyclerView, fab);
     }
 
     @Override

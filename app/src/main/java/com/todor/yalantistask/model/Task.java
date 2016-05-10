@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.model;
+package com.todor.yalantistask.model;
 
 public class Task {
 

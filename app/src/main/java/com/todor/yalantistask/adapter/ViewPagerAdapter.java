@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.adapter;
+package com.todor.yalantistask.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

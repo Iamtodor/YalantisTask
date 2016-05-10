@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.utils;
+package com.todor.yalantistask.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

@@ -1,4 +1,4 @@
-package com.todor.yalantistask1.adapter;
+package com.todor.yalantistask.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.todor.yalantistask1.R;
-import com.todor.yalantistask1.model.Task;
+import com.todor.yalantistask.R;
+import com.todor.yalantistask.model.Task;
 
 import java.util.List;
 
