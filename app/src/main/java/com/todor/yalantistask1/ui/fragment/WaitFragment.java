@@ -1,9 +1,7 @@
 package com.todor.yalantistask1.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,14 +10,13 @@ import com.todor.yalantistask1.R;
 import com.todor.yalantistask1.adapter.WorkAdapter;
 import com.todor.yalantistask1.interfaces.OnItemClickListener;
 import com.todor.yalantistask1.model.Task;
-import com.todor.yalantistask1.ui.activity.DetailsActivity;
 import com.todor.yalantistask1.utils.Utils;
 
 import java.util.List;
 
 import butterknife.Bind;
 
-public class DoneFragment extends BaseFragment implements OnItemClickListener {
+public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
     @Bind(R.id.recycler_view) protected RecyclerView recyclerView;
     @Bind(R.id.fab) protected FloatingActionButton fab;
@@ -27,16 +24,14 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
 
     @Override
     protected int getContentViewId() {
-        return R.layout.done_fragment;
+        return R.layout.wait_fragment;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mTasks = Utils.getTasks();
-
-        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-        recyclerView.setItemAnimator(itemAnimator);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -59,6 +54,6 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
 
     @Override
     public void onItemClick(int position) {
-        startActivity(new Intent(getContext(), DetailsActivity.class));
+
     }
 }

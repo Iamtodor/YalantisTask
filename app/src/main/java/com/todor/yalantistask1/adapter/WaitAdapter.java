@@ -17,12 +17,12 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class OnTheWaitAdapter extends ArrayAdapter<Task> {
+public class WaitAdapter extends ArrayAdapter<Task> {
 
     private Context mContext;
     private List<Task> mTasks;
 
-    public OnTheWaitAdapter(Context context, List<Task> tasks) {
+    public WaitAdapter(Context context, List<Task> tasks) {
         super(context, 0, tasks);
         mTasks = tasks;
         mContext = context;

@@ -18,13 +18,13 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class OnTheGoAdapter extends RecyclerView.Adapter<OnTheGoAdapter.ViewHolderProductItem> {
+public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolderProductItem> {
 
     private Context mContext;
     private List<Task> mTasks;
     private OnItemClickListener onItemClickListener;
 
-    public OnTheGoAdapter(Context mContext, List<Task> tasks, OnItemClickListener onItemClickListener) {
+    public WorkAdapter(Context mContext, List<Task> tasks, OnItemClickListener onItemClickListener) {
         this.mContext = mContext;
         this.mTasks = tasks;
         this.onItemClickListener = onItemClickListener;

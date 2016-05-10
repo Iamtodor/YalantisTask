@@ -1,7 +1,6 @@
 package com.todor.yalantistask1.ui.activity;
 
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -27,8 +26,8 @@ import android.widget.TextView;
 import com.todor.yalantistask1.R;
 import com.todor.yalantistask1.adapter.ViewPagerAdapter;
 import com.todor.yalantistask1.ui.fragment.DoneFragment;
-import com.todor.yalantistask1.ui.fragment.InWorkFragment;
-import com.todor.yalantistask1.ui.fragment.OnTheWaitFragment;
+import com.todor.yalantistask1.ui.fragment.WorkFragment;
+import com.todor.yalantistask1.ui.fragment.WaitFragment;
 
 import butterknife.Bind;
 
@@ -119,9 +118,9 @@ public class MainActivity extends BaseActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new InWorkFragment(), "On the go");
+        adapter.addFragment(new WorkFragment(), "On the go");
         adapter.addFragment(new DoneFragment(), "Done");
-        adapter.addFragment(new OnTheWaitFragment(), "On the wait");
+        adapter.addFragment(new WaitFragment(), "On the wait");
         viewPager.setAdapter(adapter);
     }
 
