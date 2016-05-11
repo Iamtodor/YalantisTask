@@ -31,6 +31,7 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.todor.yalantistask.Prefs;
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.adapter.ViewPagerAdapter;
 import com.todor.yalantistask.ui.fragment.DoneFragment;
@@ -46,14 +47,22 @@ public class MainActivity extends BaseActivity
 
     public static final String IT_RUH_DNIPRO = "http://www.itruh.dp.ua/";
     public static final String YALANTIS = "https://yalantis.com/";
-    @Bind(R.id.made_by) protected TextView footerMadeBy;
-    @Bind(R.id.toolbar_container) protected AppBarLayout appBarLayout;
-    @Bind(R.id.toolbar) protected Toolbar toolbar;
-    @Bind(R.id.drawer_layout) protected DrawerLayout drawer;
-    @Bind(R.id.nav_view) protected NavigationView navigationView;
-    @Bind(R.id.viewpager) protected ViewPager viewPager;
-    @Bind(R.id.tabs) protected TabLayout tabLayout;
+    @Bind(R.id.made_by)
+    protected TextView footerMadeBy;
+    @Bind(R.id.toolbar_container)
+    protected AppBarLayout appBarLayout;
+    @Bind(R.id.toolbar)
+    protected Toolbar toolbar;
+    @Bind(R.id.drawer_layout)
+    protected DrawerLayout drawer;
+    @Bind(R.id.nav_view)
+    protected NavigationView navigationView;
+    @Bind(R.id.viewpager)
+    protected ViewPager viewPager;
+    @Bind(R.id.tabs)
+    protected TabLayout tabLayout;
     private CallbackManager callbackManager;
+    private Prefs prefs;
 
     @Override
     protected int getContentViewId() {
@@ -68,13 +77,15 @@ public class MainActivity extends BaseActivity
         FacebookSdk.sdkInitialize(this);
 
         callbackManager = CallbackManager.Factory.create();
+        prefs = new Prefs(MainActivity.this);
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        Log.d("Success", "Login");
-
+                        Log.d(TAG, "onSuccess: " + loginResult.getAccessToken().getToken());
+                        prefs.setFacebookToken(loginResult.getAccessToken().getToken());
+                        setLoginLogoutText();
                     }
 
                     @Override
@@ -123,8 +134,14 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.log_in:
                 // TODO: 22.04.16 log in
-                LoginManager.getInstance().logInWithReadPermissions(this,
-                        Arrays.asList("public_profile", "user_friends"));
+                if (prefs.isFacebookTokenExists()) {
+                    prefs.clearAll();
+                    LoginManager.getInstance().logOut();
+                } else {
+                    LoginManager.getInstance().logInWithReadPermissions(this,
+                            Arrays.asList("public_profile", "user_friends"));
+                }
+                setLoginLogoutText();
                 break;
         }
 
@@ -220,5 +237,15 @@ public class MainActivity extends BaseActivity
         Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
         intent.putExtra("url", url);
         startActivity(intent);
+    }
+
+    private void setLoginLogoutText() {
+        Menu navigationMenu = navigationView.getMenu();
+        MenuItem loginLogout = navigationMenu.findItem(R.id.log_in);
+        if (prefs.isFacebookTokenExists()) {
+            loginLogout.setTitle("Log out");
+        } else {
+            loginLogout.setTitle("Log in");
+        }
     }
 }
