@@ -1,8 +1,8 @@
 package com.todor.yalantistask.ui.activity;
 
-import android.support.design.widget.AppBarLayout;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -18,16 +18,26 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.adapter.ViewPagerAdapter;
 import com.todor.yalantistask.ui.fragment.DoneFragment;
-import com.todor.yalantistask.ui.fragment.WorkFragment;
 import com.todor.yalantistask.ui.fragment.WaitFragment;
+import com.todor.yalantistask.ui.fragment.WorkFragment;
+
+import java.util.Arrays;
 
 import butterknife.Bind;
 
@@ -43,6 +53,7 @@ public class MainActivity extends BaseActivity
     @Bind(R.id.nav_view) protected NavigationView navigationView;
     @Bind(R.id.viewpager) protected ViewPager viewPager;
     @Bind(R.id.tabs) protected TabLayout tabLayout;
+    private CallbackManager callbackManager;
 
     @Override
     protected int getContentViewId() {
@@ -54,6 +65,29 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
 
         setSupportActionBar(toolbar);
+        FacebookSdk.sdkInitialize(this);
+
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Log.d("Success", "Login");
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Toast.makeText(MainActivity.this, "Login Cancel", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        Toast.makeText(MainActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
 
 //        if (savedInstanceState == null) {
 //            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -73,6 +107,64 @@ public class MainActivity extends BaseActivity
         tabLayout.setupWithViewPager(viewPager);
 
         setColor(footerMadeBy, footerMadeBy.getText().toString());
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.all_handling:
+                // TODO: 22.04.16 all requests
+                getSupportActionBar().setTitle(R.string.all_requests);
+                break;
+            case R.id.map_handling:
+                // TODO: 22.04.16 map requests
+                getSupportActionBar().setTitle(R.string.map_requests);
+                break;
+            case R.id.log_in:
+                // TODO: 22.04.16 log in
+                LoginManager.getInstance().logInWithReadPermissions(this,
+                        Arrays.asList("public_profile", "user_friends"));
+                break;
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.some_item) {
+            // TODO: 22.04.16 handle click on some item
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private void setColor(TextView view, String fulltext) {
@@ -128,59 +220,5 @@ public class MainActivity extends BaseActivity
         Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
         intent.putExtra("url", url);
         startActivity(intent);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.all_handling:
-                // TODO: 22.04.16 all requests
-                getSupportActionBar().setTitle(R.string.all_requests);
-                break;
-            case R.id.map_handling:
-                // TODO: 22.04.16 map requests
-                getSupportActionBar().setTitle(R.string.map_requests);
-                break;
-            case R.id.log_in:
-                // TODO: 22.04.16 log in
-                break;
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.some_item) {
-            // TODO: 22.04.16 handle click on some item
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public AppBarLayout getAppBar() {
-        return appBarLayout;
     }
 }
