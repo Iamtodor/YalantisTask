@@ -53,5 +53,7 @@
     <string name="e_contact">e-contact</string>
     <string name="facebook_app_id">1283955428298845</string>
     <string name="profile">Profile</string>
+    <string name="login_cancel">Login Cancel</string>
+    <string name="log_out">Log out</string>
 </resources>
 

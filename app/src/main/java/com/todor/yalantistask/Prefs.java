@@ -35,11 +35,6 @@ public class Prefs {
         preferences.edit().putString(PROFILE_ICON, url).apply();
     }
 
-    public String getProfileIcon() {
-        return !TextUtils.isEmpty(preferences.getString(TOKEN, null)) ? preferences.getString(TOKEN, null)
-                : "https://cdn3.iconfinder.com/data/icons/rcons-user-action/32/boy-512.png";
-    }
-
     public void saveCurrentUser(User currentUser) {
         preferences.edit().putString(USER, gson.toJson(currentUser)).apply();
     }

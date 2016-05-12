@@ -19,12 +19,10 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -51,7 +49,16 @@ import java.util.Arrays;
 import butterknife.Bind;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, FacebookCallback<LoginResult> {
+
+    public static final String IT_RUH_DNIPRO = "http://www.itruh.dp.ua/";
+    public static final String YALANTIS = "https://yalantis.com/";
+    public static final String EMAIL = "email";
+    public static final String BIRTHDAY = "birthday";
+    public static final String NAME = "name";
+    public static final String FACEBOOK_URL = "https://graph.facebook.com/";
+    public static final String PICTURE_TYPE_LARGE = "/picture?type=large";
+    public static final String URL = "url";
 
     @Bind(R.id.made_by) protected TextView footerMadeBy;
     @Bind(R.id.toolbar_container) protected AppBarLayout appBarLayout;
@@ -59,10 +66,8 @@ public class MainActivity extends BaseActivity
     @Bind(R.id.drawer_layout) protected DrawerLayout drawer;
     @Bind(R.id.nav_view) protected NavigationView navigationView;
     @Bind(R.id.viewpager) protected ViewPager viewPager;
-    @Bind(R.id.tabs) protected TabLayout tabLayout;
 
-    public static final String IT_RUH_DNIPRO = "http://www.itruh.dp.ua/";
-    public static final String YALANTIS = "https://yalantis.com/";
+    @Bind(R.id.tabs) protected TabLayout tabLayout;
 
     private CallbackManager callbackManager;
     private Prefs prefs;
@@ -83,58 +88,7 @@ public class MainActivity extends BaseActivity
         callbackManager = CallbackManager.Factory.create();
         prefs = new Prefs(MainActivity.this);
 
-        LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        prefs.saveFacebookToken(loginResult.getAccessToken().getToken());
-                        user = new User();
-                        final String profileIconUrl = "https://graph.facebook.com/" + loginResult.getAccessToken().getUserId() + "/picture?type=large";
-                        prefs.saveProfileIcon(profileIconUrl);
-                        GraphRequest request = GraphRequest.newMeRequest(
-                                loginResult.getAccessToken(),
-                                new GraphRequest.GraphJSONObjectCallback() {
-                                    @Override
-                                    public void onCompleted(JSONObject object, GraphResponse response) {
-                                        try {
-                                            user.setEmail(object.getString("email"));
-                                            user.setBirthday(object.getString("birthday"));
-                                            user.setName(object.getString("name"));
-                                            user.setProfileIcon(profileIconUrl);
-                                            prefs.saveCurrentUser(user);
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-
-                        Bundle parameters = new Bundle();
-                        parameters.putString("fields", "id,name,email,gender,birthday");
-                        request.setParameters(parameters);
-                        request.executeAsync();
-
-                        setLoginLogoutText();
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        Toast.makeText(MainActivity.this, "Login Cancel", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        Toast.makeText(MainActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-
-
-//        if (savedInstanceState == null) {
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            transaction.replace(R.id.content, new InWorkFragment());
-//            transaction.commit();
-//            navigationView.setCheckedItem(R.id.all_handling);
-//            getSupportActionBar().setTitle(R.string.all_requests);
-//        }
+        LoginManager.getInstance().registerCallback(callbackManager, this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -146,6 +100,7 @@ public class MainActivity extends BaseActivity
         tabLayout.setupWithViewPager(viewPager);
 
         setColor(footerMadeBy, footerMadeBy.getText().toString());
+        setLoginLogoutViews();
     }
 
     @Override
@@ -166,14 +121,7 @@ public class MainActivity extends BaseActivity
                 transaction.commit();
                 break;
             case R.id.log_in:
-                if (prefs.isFacebookTokenExists()) {
-                    prefs.clearAll();
-                    LoginManager.getInstance().logOut();
-                } else {
-                    LoginManager.getInstance().logInWithReadPermissions(this,
-                            Arrays.asList("public_profile", "user_friends", "email", "user_birthday"));
-                }
-                setLoginLogoutText();
+                loginLogout();
                 break;
         }
 
@@ -214,6 +162,47 @@ public class MainActivity extends BaseActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onSuccess(LoginResult loginResult) {
+        prefs.saveFacebookToken(loginResult.getAccessToken().getToken());
+        user = new User();
+        final String profileIconUrl = FACEBOOK_URL + loginResult.getAccessToken().getUserId() + PICTURE_TYPE_LARGE;
+        prefs.saveProfileIcon(profileIconUrl);
+        GraphRequest request = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        try {
+                            user.setEmail(object.getString(EMAIL));
+                            user.setBirthday(object.getString(BIRTHDAY));
+                            user.setName(object.getString(NAME));
+                            user.setProfileIcon(profileIconUrl);
+                            prefs.saveCurrentUser(user);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,email,gender,birthday");
+        request.setParameters(parameters);
+        request.executeAsync();
+
+        setLoginLogoutViews();
+    }
+
+    @Override
+    public void onCancel() {
+        snackbar(tabLayout, R.string.login_cancel);
+    }
+
+    @Override
+    public void onError(FacebookException error) {
+        toast(error.getMessage());
     }
 
     private void setColor(TextView view, String fulltext) {
@@ -267,17 +256,30 @@ public class MainActivity extends BaseActivity
 
     private void startWebViewActivity(String url) {
         Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
-        intent.putExtra("url", url);
+        intent.putExtra(URL, url);
         startActivity(intent);
     }
 
-    private void setLoginLogoutText() {
+    private void setLoginLogoutViews() {
         Menu navigationMenu = navigationView.getMenu();
         MenuItem loginLogout = navigationMenu.findItem(R.id.log_in);
         if (prefs.isFacebookTokenExists()) {
-            loginLogout.setTitle("Log out");
+            navigationMenu.findItem(R.id.profile).setVisible(true);
+            loginLogout.setTitle(R.string.log_out);
         } else {
-            loginLogout.setTitle("Log in");
+            navigationMenu.findItem(R.id.profile).setVisible(false);
+            loginLogout.setTitle(R.string.log_in);
         }
+    }
+
+    private void loginLogout() {
+        if (prefs.isFacebookTokenExists()) {
+            prefs.clearAll();
+            LoginManager.getInstance().logOut();
+        } else {
+            LoginManager.getInstance().logInWithReadPermissions(this,
+                    Arrays.asList("public_profile", "user_friends", "email", "user_birthday"));
+        }
+        setLoginLogoutViews();
     }
 }

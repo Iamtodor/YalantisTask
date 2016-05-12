@@ -17,7 +17,8 @@
             android:id="@+id/profile"
             android:checked="true"
             android:icon="@drawable/ic_account"
-            android:title="@string/profile" />
+            android:title="@string/profile"
+            android:visible="false"/>
     </group>
 
     <group
