@@ -10,6 +10,7 @@ import com.squareup.picasso.Picasso;
 import com.todor.yalantistask.Prefs;
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.model.User;
+import com.todor.yalantistask.utils.CircleTransform;
 
 import butterknife.Bind;
 
@@ -29,7 +30,10 @@ public class ProfileFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         Prefs prefs = new Prefs(getContext());
         User user = prefs.getUser();
-        Picasso.with(getContext()).load(user.getProfileIcon()).into(userIcon);
+        Picasso.with(getContext())
+                .load(user.getProfileIcon())
+                .transform(new CircleTransform())
+                .into(userIcon);
 
         userName.setText(user.getName());
         userEmail.setText(user.getEmail());

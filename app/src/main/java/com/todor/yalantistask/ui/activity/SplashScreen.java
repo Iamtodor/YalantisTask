@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
-    public static final int DELAY_MILLIS = 1000;
+    public static final int DELAY_MILLIS = 700;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
