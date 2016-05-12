@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -29,14 +30,21 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.todor.yalantistask.Prefs;
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.adapter.ViewPagerAdapter;
+import com.todor.yalantistask.model.User;
 import com.todor.yalantistask.ui.fragment.DoneFragment;
+import com.todor.yalantistask.ui.fragment.ProfileFragment;
 import com.todor.yalantistask.ui.fragment.WaitFragment;
 import com.todor.yalantistask.ui.fragment.WorkFragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -45,24 +53,20 @@ import butterknife.Bind;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    @Bind(R.id.made_by) protected TextView footerMadeBy;
+    @Bind(R.id.toolbar_container) protected AppBarLayout appBarLayout;
+    @Bind(R.id.toolbar) protected Toolbar toolbar;
+    @Bind(R.id.drawer_layout) protected DrawerLayout drawer;
+    @Bind(R.id.nav_view) protected NavigationView navigationView;
+    @Bind(R.id.viewpager) protected ViewPager viewPager;
+    @Bind(R.id.tabs) protected TabLayout tabLayout;
+
     public static final String IT_RUH_DNIPRO = "http://www.itruh.dp.ua/";
     public static final String YALANTIS = "https://yalantis.com/";
-    @Bind(R.id.made_by)
-    protected TextView footerMadeBy;
-    @Bind(R.id.toolbar_container)
-    protected AppBarLayout appBarLayout;
-    @Bind(R.id.toolbar)
-    protected Toolbar toolbar;
-    @Bind(R.id.drawer_layout)
-    protected DrawerLayout drawer;
-    @Bind(R.id.nav_view)
-    protected NavigationView navigationView;
-    @Bind(R.id.viewpager)
-    protected ViewPager viewPager;
-    @Bind(R.id.tabs)
-    protected TabLayout tabLayout;
+
     private CallbackManager callbackManager;
     private Prefs prefs;
+    private User user;
 
     @Override
     protected int getContentViewId() {
@@ -83,8 +87,32 @@ public class MainActivity extends BaseActivity
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        Log.d(TAG, "onSuccess: " + loginResult.getAccessToken().getToken());
-                        prefs.setFacebookToken(loginResult.getAccessToken().getToken());
+                        prefs.saveFacebookToken(loginResult.getAccessToken().getToken());
+                        user = new User();
+                        final String profileIconUrl = "https://graph.facebook.com/" + loginResult.getAccessToken().getUserId() + "/picture?type=large";
+                        prefs.saveProfileIcon(profileIconUrl);
+                        GraphRequest request = GraphRequest.newMeRequest(
+                                loginResult.getAccessToken(),
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(JSONObject object, GraphResponse response) {
+                                        try {
+                                            user.setEmail(object.getString("email"));
+                                            user.setBirthday(object.getString("birthday"));
+                                            user.setName(object.getString("name"));
+                                            user.setProfileIcon(profileIconUrl);
+                                            prefs.saveCurrentUser(user);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,name,email,gender,birthday");
+                        request.setParameters(parameters);
+                        request.executeAsync();
+
                         setLoginLogoutText();
                     }
 
@@ -132,14 +160,18 @@ public class MainActivity extends BaseActivity
                 // TODO: 22.04.16 map requests
                 getSupportActionBar().setTitle(R.string.map_requests);
                 break;
+            case R.id.profile:
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.content, new ProfileFragment());
+                transaction.commit();
+                break;
             case R.id.log_in:
-                // TODO: 22.04.16 log in
                 if (prefs.isFacebookTokenExists()) {
                     prefs.clearAll();
                     LoginManager.getInstance().logOut();
                 } else {
                     LoginManager.getInstance().logInWithReadPermissions(this,
-                            Arrays.asList("public_profile", "user_friends"));
+                            Arrays.asList("public_profile", "user_friends", "email", "user_birthday"));
                 }
                 setLoginLogoutText();
                 break;

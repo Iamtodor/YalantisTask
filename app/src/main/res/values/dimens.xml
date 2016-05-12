@@ -37,4 +37,6 @@
     <dimen name="card_corner_radius">7dp</dimen>
     <dimen name="progress_dialog_size">52dp</dimen>
     <dimen name="progress_dialog_margin">8dp</dimen>
+    <dimen name="profile_icon_size">150dp</dimen>
+    <dimen name="profile_icon_margin_top">40dp</dimen>
 </resources>
