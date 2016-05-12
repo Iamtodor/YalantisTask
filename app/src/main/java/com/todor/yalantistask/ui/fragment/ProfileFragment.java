@@ -11,6 +11,7 @@ import com.todor.yalantistask.Prefs;
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.model.User;
 import com.todor.yalantistask.utils.CircleTransform;
+import com.todor.yalantistask.utils.StrokeTransform;
 
 import butterknife.Bind;
 
@@ -33,6 +34,7 @@ public class ProfileFragment extends BaseFragment {
         Picasso.with(getContext())
                 .load(user.getProfileIcon())
                 .transform(new CircleTransform())
+                .transform(new StrokeTransform())
                 .into(userIcon);
 
         userName.setText(user.getName());
