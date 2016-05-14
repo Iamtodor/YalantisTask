@@ -47,18 +47,20 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 import butterknife.Bind;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, FacebookCallback<LoginResult> {
 
-    public static final String IT_RUH_DNIPRO = "http://www.itruh.dp.ua/";
-    public static final String YALANTIS = "https://yalantis.com/";
-    public static final String EMAIL = "email";
-    public static final String BIRTHDAY = "birthday";
-    public static final String NAME = "name";
-    public static final String FACEBOOK_URL = "https://graph.facebook.com/";
-    public static final String PICTURE_TYPE_LARGE = "/picture?type=large";
-    public static final String URL = "url";
+    private static final String IT_RUH_DNIPRO = "http://www.itruh.dp.ua/";
+    private static final String YALANTIS = "https://yalantis.com/";
+    private static final String EMAIL = "email";
+    private static final String BIRTHDAY = "birthday";
+    private static final String NAME = "name";
+    private static final String FACEBOOK_URL = "https://graph.facebook.com/";
+    private static final String PICTURE_TYPE_LARGE = "/picture?type=large";
+    private static final String URL = "url";
 
     @Bind(R.id.made_by) protected TextView footerMadeBy;
     @Bind(R.id.toolbar_container) protected AppBarLayout appBarLayout;
@@ -66,12 +68,13 @@ public class MainActivity extends BaseActivity
     @Bind(R.id.drawer_layout) protected DrawerLayout drawer;
     @Bind(R.id.nav_view) protected NavigationView navigationView;
     @Bind(R.id.viewpager) protected ViewPager viewPager;
-
     @Bind(R.id.tabs) protected TabLayout tabLayout;
 
-    private CallbackManager callbackManager;
-    private Prefs prefs;
-    private User user;
+    private CallbackManager mCallbackManager;
+    private Prefs mPrefs;
+    private User mUser;
+    private Realm mRealm;
+    private RealmConfiguration mRealmConfig;
 
     @Override
     protected int getContentViewId() {
@@ -85,10 +88,10 @@ public class MainActivity extends BaseActivity
         setSupportActionBar(toolbar);
         FacebookSdk.sdkInitialize(this);
 
-        callbackManager = CallbackManager.Factory.create();
-        prefs = new Prefs(MainActivity.this);
+        mCallbackManager = CallbackManager.Factory.create();
+        mPrefs = new Prefs(MainActivity.this);
 
-        LoginManager.getInstance().registerCallback(callbackManager, this);
+        LoginManager.getInstance().registerCallback(mCallbackManager, this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -161,26 +164,27 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onSuccess(LoginResult loginResult) {
-        prefs.saveFacebookToken(loginResult.getAccessToken().getToken());
-        user = new User();
+        mPrefs.saveFacebookToken(loginResult.getAccessToken().getToken());
+
         final String profileIconUrl = FACEBOOK_URL + loginResult.getAccessToken().getUserId() + PICTURE_TYPE_LARGE;
-        prefs.saveProfileIcon(profileIconUrl);
+        mPrefs.saveProfileIcon(profileIconUrl);
         GraphRequest request = GraphRequest.newMeRequest(
                 loginResult.getAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         try {
-                            user.setEmail(object.getString(EMAIL));
-                            user.setBirthday(object.getString(BIRTHDAY));
-                            user.setName(object.getString(NAME));
-                            user.setProfileIcon(profileIconUrl);
-                            prefs.saveCurrentUser(user);
+                            initRealm();
+
+                            saveCurrentUser(object, profileIconUrl);
+
+
+                            mPrefs.saveCurrentUser(mUser);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -193,6 +197,22 @@ public class MainActivity extends BaseActivity
         request.executeAsync();
 
         setLoginLogoutViews();
+    }
+
+    private void saveCurrentUser(JSONObject object, String profileIconUrl) throws JSONException {
+        mRealm.beginTransaction();
+        mUser = mRealm.createObject(User.class);
+        mUser.setEmail(object.getString(EMAIL));
+        mUser.setBirthday(object.getString(BIRTHDAY));
+        mUser.setName(object.getString(NAME));
+        mUser.setProfileIcon(profileIconUrl);
+        mRealm.copyToRealmOrUpdate(mUser);
+        mRealm.commitTransaction();
+    }
+
+    private void initRealm() {
+        mRealmConfig = new RealmConfiguration.Builder(MainActivity.this).build();
+        mRealm = Realm.getInstance(mRealmConfig);
     }
 
     @Override
@@ -263,7 +283,7 @@ public class MainActivity extends BaseActivity
     private void setLoginLogoutViews() {
         Menu navigationMenu = navigationView.getMenu();
         MenuItem loginLogout = navigationMenu.findItem(R.id.log_in);
-        if (prefs.isFacebookTokenExists()) {
+        if (mPrefs.isFacebookTokenExists()) {
             navigationMenu.findItem(R.id.profile).setVisible(true);
             loginLogout.setTitle(R.string.log_out);
         } else {
@@ -273,8 +293,8 @@ public class MainActivity extends BaseActivity
     }
 
     private void loginLogout() {
-        if (prefs.isFacebookTokenExists()) {
-            prefs.clearAll();
+        if (mPrefs.isFacebookTokenExists()) {
+            mPrefs.clearAll();
             LoginManager.getInstance().logOut();
         } else {
             LoginManager.getInstance().logInWithReadPermissions(this,
