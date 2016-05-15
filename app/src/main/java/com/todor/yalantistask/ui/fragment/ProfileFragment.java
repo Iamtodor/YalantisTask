@@ -6,11 +6,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.model.User;
 import com.todor.yalantistask.utils.CircleTransform;
-import com.todor.yalantistask.utils.StrokeTransform;
 
 import butterknife.Bind;
 import io.realm.Realm;
@@ -33,12 +32,14 @@ public class ProfileFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
         initRealm();
-        User user = mRealm.where(User.class).findFirst();
-        Picasso.with(getContext())
+        final User user = mRealm.where(User.class).findFirst();
+        Glide.with(getContext())
                 .load(user.getProfileIcon())
-                .transform(new CircleTransform())
-                .transform(new StrokeTransform())
+                .asBitmap()
+                .transform(new CircleTransform(getContext()))
+//                .transform(new RoundedCornersTransformation(getContext(), 150, 0))
                 .into(userIcon);
 
         userName.setText(user.getName());

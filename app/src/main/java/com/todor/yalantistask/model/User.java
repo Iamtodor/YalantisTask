@@ -6,7 +6,7 @@ public class User extends RealmObject {
 
     private String name;
     private String email;
-    private String icon;
+    private String profileIcon;
     private String birthday;
     private String token;
 
@@ -27,11 +27,11 @@ public class User extends RealmObject {
     }
 
     public String getProfileIcon() {
-        return icon;
+        return profileIcon;
     }
 
     public void setProfileIcon(String icon) {
-        this.icon = icon;
+        this.profileIcon = icon;
     }
 
     public String getBirthday() {
@@ -40,14 +40,6 @@ public class User extends RealmObject {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
     }
 
     public String getToken() {
@@ -63,7 +55,7 @@ public class User extends RealmObject {
         return "User{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", icon='" + icon + '\'' +
+                ", profileIcon='" + profileIcon + '\'' +
                 ", birthday='" + birthday + '\'' +
                 '}';
     }
