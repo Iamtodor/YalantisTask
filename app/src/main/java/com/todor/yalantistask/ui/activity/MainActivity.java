@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -71,7 +72,6 @@ public class MainActivity extends BaseActivity
     @Bind(R.id.tabs) protected TabLayout tabLayout;
 
     private CallbackManager mCallbackManager;
-    private Prefs mPrefs;
     private User mUser;
     private Realm mRealm;
     private RealmConfiguration mRealmConfig;
@@ -87,9 +87,8 @@ public class MainActivity extends BaseActivity
 
         setSupportActionBar(toolbar);
         FacebookSdk.sdkInitialize(this);
-
+        initRealm();
         mCallbackManager = CallbackManager.Factory.create();
-        mPrefs = new Prefs(MainActivity.this);
 
         LoginManager.getInstance().registerCallback(mCallbackManager, this);
 
@@ -168,23 +167,14 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void onSuccess(LoginResult loginResult) {
-        mPrefs.saveFacebookToken(loginResult.getAccessToken().getToken());
-
-        final String profileIconUrl = FACEBOOK_URL + loginResult.getAccessToken().getUserId() + PICTURE_TYPE_LARGE;
-        mPrefs.saveProfileIcon(profileIconUrl);
+    public void onSuccess(final LoginResult loginResult) {
         GraphRequest request = GraphRequest.newMeRequest(
                 loginResult.getAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
+                    public void onCompleted(JSONObject jsonUser, GraphResponse response) {
                         try {
-                            initRealm();
-
-                            saveCurrentUser(object, profileIconUrl);
-
-
-                            mPrefs.saveCurrentUser(mUser);
+                            saveCurrentUser(jsonUser, loginResult);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -199,22 +189,6 @@ public class MainActivity extends BaseActivity
         setLoginLogoutViews();
     }
 
-    private void saveCurrentUser(JSONObject object, String profileIconUrl) throws JSONException {
-        mRealm.beginTransaction();
-        mUser = mRealm.createObject(User.class);
-        mUser.setEmail(object.getString(EMAIL));
-        mUser.setBirthday(object.getString(BIRTHDAY));
-        mUser.setName(object.getString(NAME));
-        mUser.setProfileIcon(profileIconUrl);
-        mRealm.copyToRealmOrUpdate(mUser);
-        mRealm.commitTransaction();
-    }
-
-    private void initRealm() {
-        mRealmConfig = new RealmConfiguration.Builder(MainActivity.this).build();
-        mRealm = Realm.getInstance(mRealmConfig);
-    }
-
     @Override
     public void onCancel() {
         snackbar(tabLayout, R.string.login_cancel);
@@ -223,6 +197,19 @@ public class MainActivity extends BaseActivity
     @Override
     public void onError(FacebookException error) {
         toast(error.getMessage());
+    }
+
+    private void initRealm() {
+        mRealmConfig = new RealmConfiguration.Builder(MainActivity.this).build();
+        mRealm = Realm.getInstance(mRealmConfig);
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new WorkFragment(), "On the go");
+        adapter.addFragment(new DoneFragment(), "Done");
+        adapter.addFragment(new WaitFragment(), "On the wait");
+        viewPager.setAdapter(adapter);
     }
 
     private void setColor(TextView view, String fulltext) {
@@ -266,24 +253,29 @@ public class MainActivity extends BaseActivity
         footerMadeBy.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new WorkFragment(), "On the go");
-        adapter.addFragment(new DoneFragment(), "Done");
-        adapter.addFragment(new WaitFragment(), "On the wait");
-        viewPager.setAdapter(adapter);
-    }
-
     private void startWebViewActivity(String url) {
         Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
         intent.putExtra(URL, url);
         startActivity(intent);
     }
 
+    private void loginLogout() {
+        if (isCurrentUserExists()) {
+            LoginManager.getInstance().logOut();
+            mRealm.beginTransaction();
+            mRealm.delete(User.class);
+            mRealm.commitTransaction();
+        } else {
+            LoginManager.getInstance().logInWithReadPermissions(this,
+                    Arrays.asList("public_profile", "user_friends", "email", "user_birthday"));
+        }
+        setLoginLogoutViews();
+    }
+
     private void setLoginLogoutViews() {
         Menu navigationMenu = navigationView.getMenu();
         MenuItem loginLogout = navigationMenu.findItem(R.id.log_in);
-        if (mPrefs.isFacebookTokenExists()) {
+        if (isCurrentUserExists()) {
             navigationMenu.findItem(R.id.profile).setVisible(true);
             loginLogout.setTitle(R.string.log_out);
         } else {
@@ -292,14 +284,27 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private void loginLogout() {
-        if (mPrefs.isFacebookTokenExists()) {
-            mPrefs.clearAll();
-            LoginManager.getInstance().logOut();
-        } else {
-            LoginManager.getInstance().logInWithReadPermissions(this,
-                    Arrays.asList("public_profile", "user_friends", "email", "user_birthday"));
-        }
-        setLoginLogoutViews();
+    private boolean isCurrentUserExists() {
+        User user = mRealm.where(User.class).findFirst();
+        if (user != null)
+            return !TextUtils.isEmpty(user.getToken());
+        return false;
+    }
+
+    private void saveCurrentUser(JSONObject object, LoginResult loginResult) throws JSONException {
+        String profileIconUrl = FACEBOOK_URL + loginResult.getAccessToken().getUserId() + PICTURE_TYPE_LARGE;
+        String token = loginResult.getAccessToken().getToken();
+
+        mRealm.beginTransaction();
+
+        mUser = mRealm.createObject(User.class);
+        mUser.setEmail(object.getString(EMAIL));
+        mUser.setBirthday(object.getString(BIRTHDAY));
+        mUser.setName(object.getString(NAME));
+
+        mUser.setProfileIcon(profileIconUrl);
+        mUser.setToken(token);
+
+        mRealm.commitTransaction();
     }
 }

@@ -31,10 +31,6 @@ public class Prefs {
         return !TextUtils.isEmpty(preferences.getString(TOKEN, null));
     }
 
-    public void saveProfileIcon(String url) {
-        preferences.edit().putString(PROFILE_ICON, url).apply();
-    }
-
     public void saveCurrentUser(User currentUser) {
         preferences.edit().putString(USER, gson.toJson(currentUser)).apply();
     }

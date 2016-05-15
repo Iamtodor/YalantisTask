@@ -1,15 +1,14 @@
 package com.todor.yalantistask.model;
 
 import io.realm.RealmObject;
-import io.realm.annotations.RealmClass;
 
-@RealmClass
-public class User extends RealmObject{
+public class User extends RealmObject {
 
     private String name;
     private String email;
     private String icon;
     private String birthday;
+    private String token;
 
     public String getName() {
         return name;
@@ -41,6 +40,22 @@ public class User extends RealmObject{
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override
