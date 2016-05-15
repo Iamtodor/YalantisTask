@@ -33,7 +33,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.todor.yalantistask.Prefs;
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.adapter.ViewPagerAdapter;
 import com.todor.yalantistask.model.User;
@@ -185,8 +184,6 @@ public class MainActivity extends BaseActivity
         parameters.putString("fields", "id,name,email,gender,birthday");
         request.setParameters(parameters);
         request.executeAsync();
-
-        setLoginLogoutViews();
     }
 
     @Override
@@ -304,7 +301,7 @@ public class MainActivity extends BaseActivity
 
         mUser.setProfileIcon(profileIconUrl);
         mUser.setToken(token);
-
         mRealm.commitTransaction();
+        setLoginLogoutViews();
     }
 }
