@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.model.User;
 import com.todor.yalantistask.utils.CircleTransform;
+import com.todor.yalantistask.utils.StrokeTransform;
 
 import butterknife.Bind;
 import io.realm.Realm;
@@ -38,8 +39,7 @@ public class ProfileFragment extends BaseFragment {
         Glide.with(getContext())
                 .load(user.getProfileIcon())
                 .asBitmap()
-                .transform(new CircleTransform(getContext()))
-//                .transform(new RoundedCornersTransformation(getContext(), 150, 0))
+                .transform(new CircleTransform(getContext()), new StrokeTransform(getContext()))
                 .into(userIcon);
 
         userName.setText(user.getName());

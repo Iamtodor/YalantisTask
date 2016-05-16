@@ -37,8 +37,4 @@ public final class Utils {
         return mTasks;
     }
 
-    public static boolean isLollipop() {
-        return android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    }
-
 }
