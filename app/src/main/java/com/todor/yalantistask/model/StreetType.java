@@ -8,9 +8,11 @@ public class StreetType {
     @SerializedName("id")
     @Expose
     private Integer id;
+
     @SerializedName("name")
     @Expose
     private String name;
+
     @SerializedName("short_name")
     @Expose
     private String shortName;

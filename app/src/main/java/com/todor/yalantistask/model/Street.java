@@ -8,12 +8,15 @@ public class Street {
     @SerializedName("id")
     @Expose
     private Integer id;
+
     @SerializedName("name")
     @Expose
     private String name;
+
     @SerializedName("ru_name")
     @Expose
     private String ruName;
+
     @SerializedName("street_type")
     @Expose
     private StreetType streetType;

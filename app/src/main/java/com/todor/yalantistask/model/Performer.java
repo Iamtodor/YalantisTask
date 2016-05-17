@@ -8,12 +8,15 @@ public class Performer {
     @SerializedName("id")
     @Expose
     private Integer id;
+
     @SerializedName("organization")
     @Expose
     private String organization;
+
     @SerializedName("person")
     @Expose
     private String person;
+
     @SerializedName("deadline")
     @Expose
     private Integer deadline;
