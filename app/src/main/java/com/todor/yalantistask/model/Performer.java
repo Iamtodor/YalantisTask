@@ -1,24 +1,19 @@
 package com.todor.yalantistask.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Performer {
 
     @SerializedName("id")
-    @Expose
     private Integer id;
 
     @SerializedName("organization")
-    @Expose
     private String organization;
 
     @SerializedName("person")
-    @Expose
     private String person;
 
     @SerializedName("deadline")
-    @Expose
     private Integer deadline;
 
     public Integer getId() {
@@ -53,4 +48,13 @@ public class Performer {
         this.deadline = deadline;
     }
 
+    @Override
+    public String toString() {
+        return "Performer{" +
+                "id=" + id +
+                ", organization='" + organization + '\'' +
+                ", person='" + person + '\'' +
+                ", deadline=" + deadline +
+                '}';
+    }
 }

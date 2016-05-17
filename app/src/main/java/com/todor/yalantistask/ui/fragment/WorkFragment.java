@@ -6,14 +6,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.adapter.WorkAdapter;
 import com.todor.yalantistask.interfaces.OnItemClickListener;
+import com.todor.yalantistask.model.Example;
 import com.todor.yalantistask.model.Task;
-import com.todor.yalantistask.model.Ticket;
 import com.todor.yalantistask.network.API;
 import com.todor.yalantistask.network.ApiService;
 import com.todor.yalantistask.ui.activity.DetailsActivity;
@@ -53,16 +52,14 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
         ApiService apiService = new ApiService();
         API api = apiService.getApiService();
-        Call<List<Ticket>> call = api.getTickets("0");
+        Call<List<Example>> call = api.getTickets("0");
 
-        call.enqueue(new Callback<List<Ticket>>() {
+        call.enqueue(new Callback<List<Example>>() {
             @Override
-            public void onResponse(Response<List<Ticket>> response, Retrofit retrofit) {
+            public void onResponse(Response<List<Example>> response, Retrofit retrofit) {
                 if(response.isSuccess()) {
-                    List<Ticket> tickets = response.body();
-                    Log.d(TAG, "onResponse: " + tickets);
+                    // TODO: 5/18/16 saving data will be implemented so soon
                 }
-                Log.d(TAG, "onResponse: ");
             }
 
             @Override

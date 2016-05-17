@@ -1,6 +1,5 @@
 package com.todor.yalantistask.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -9,46 +8,45 @@ import java.util.List;
 public class Example {
 
     @SerializedName("id")
-    @Expose
     private Integer id;
+
     @SerializedName("user")
-    @Expose
     private User user;
+
     @SerializedName("category")
-    @Expose
     private Category category;
+
     @SerializedName("type")
-    @Expose
     private Type type;
+
     @SerializedName("title")
-    @Expose
     private String title;
+
     @SerializedName("body")
-    @Expose
     private String body;
+
     @SerializedName("created_date")
-    @Expose
     private Integer createdDate;
+
     @SerializedName("start_date")
-    @Expose
     private Integer startDate;
+
     @SerializedName("state")
-    @Expose
     private State state;
+
     @SerializedName("ticket_id")
-    @Expose
     private String ticketId;
+
     @SerializedName("files")
-    @Expose
-    private List<Object> files = new ArrayList<Object>();
+    private List<File> files = new ArrayList<>();
+
     @SerializedName("performers")
-    @Expose
-    private List<Performer> performers = new ArrayList<Performer>();
+    private List<Performer> performers = new ArrayList<>();
+
     @SerializedName("deadline")
-    @Expose
     private Integer deadline;
+
     @SerializedName("likes_counter")
-    @Expose
     private Integer likesCounter;
 
     public Integer getId() {
@@ -131,11 +129,11 @@ public class Example {
         this.ticketId = ticketId;
     }
 
-    public List<Object> getFiles() {
+    public List<File> getFiles() {
         return files;
     }
 
-    public void setFiles(List<Object> files) {
+    public void setFiles(List<File> files) {
         this.files = files;
     }
 
@@ -163,4 +161,23 @@ public class Example {
         this.likesCounter = likesCounter;
     }
 
+    @Override
+    public String toString() {
+        return "Example{" +
+                "id=" + id +
+                ", user=" + user +
+                ", category=" + category +
+                ", type=" + type +
+                ", title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                ", createdDate=" + createdDate +
+                ", startDate=" + startDate +
+                ", state=" + state +
+                ", ticketId='" + ticketId + '\'' +
+                ", files=" + files +
+                ", performers=" + performers +
+                ", deadline=" + deadline +
+                ", likesCounter=" + likesCounter +
+                '}';
+    }
 }

@@ -2,7 +2,7 @@ package com.todor.yalantistask.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class StreetType {
+public class File {
 
     @SerializedName("id")
     private Integer id;
@@ -10,8 +10,8 @@ public class StreetType {
     @SerializedName("name")
     private String name;
 
-    @SerializedName("short_name")
-    private String shortName;
+    @SerializedName("filename")
+    private String filename;
 
     public Integer getId() {
         return id;
@@ -29,20 +29,12 @@ public class StreetType {
         this.name = name;
     }
 
-    public String getShortName() {
-        return shortName;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
-    @Override
-    public String toString() {
-        return "StreetType{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", shortName='" + shortName + '\'' +
-                '}';
-    }
 }

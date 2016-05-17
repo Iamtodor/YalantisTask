@@ -1,24 +1,19 @@
 package com.todor.yalantistask.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Street {
 
     @SerializedName("id")
-    @Expose
     private Integer id;
 
     @SerializedName("name")
-    @Expose
     private String name;
 
     @SerializedName("ru_name")
-    @Expose
     private String ruName;
 
     @SerializedName("street_type")
-    @Expose
     private StreetType streetType;
 
     public Integer getId() {
@@ -53,4 +48,13 @@ public class Street {
         this.streetType = streetType;
     }
 
+    @Override
+    public String toString() {
+        return "Street{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", ruName='" + ruName + '\'' +
+                ", streetType=" + streetType +
+                '}';
+    }
 }

@@ -1,27 +1,25 @@
 package com.todor.yalantistask.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Address {
 
     @SerializedName("id")
-    @Expose
     private Integer id;
+
     @SerializedName("district")
-    @Expose
     private District district;
+
     @SerializedName("city")
-    @Expose
     private City city;
+
     @SerializedName("street")
-    @Expose
     private Street street;
+
     @SerializedName("house")
-    @Expose
     private House house;
+
     @SerializedName("flat")
-    @Expose
     private String flat;
 
     public Integer getId() {
@@ -72,4 +70,15 @@ public class Address {
         this.flat = flat;
     }
 
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", district=" + district +
+                ", city=" + city +
+                ", street=" + street +
+                ", house=" + house +
+                ", flat='" + flat + '\'' +
+                '}';
+    }
 }

@@ -4,11 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -34,12 +32,9 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.todor.yalantistask.R;
-import com.todor.yalantistask.adapter.ViewPagerAdapter;
 import com.todor.yalantistask.model.User;
-import com.todor.yalantistask.ui.fragment.DoneFragment;
+import com.todor.yalantistask.ui.fragment.AllRequestsFragment;
 import com.todor.yalantistask.ui.fragment.ProfileFragment;
-import com.todor.yalantistask.ui.fragment.WaitFragment;
-import com.todor.yalantistask.ui.fragment.WorkFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,8 +62,6 @@ public class MainActivity extends BaseActivity
     @Bind(R.id.toolbar) protected Toolbar toolbar;
     @Bind(R.id.drawer_layout) protected DrawerLayout drawer;
     @Bind(R.id.nav_view) protected NavigationView navigationView;
-    @Bind(R.id.viewpager) protected ViewPager viewPager;
-    @Bind(R.id.tabs) protected TabLayout tabLayout;
 
     private CallbackManager mCallbackManager;
     private User mUser;
@@ -89,6 +82,13 @@ public class MainActivity extends BaseActivity
         initRealm();
         mCallbackManager = CallbackManager.Factory.create();
 
+        if(savedInstanceState == null) {
+            getSupportActionBar().setTitle(R.string.all_requests);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content, new AllRequestsFragment());
+            transaction.commit();
+        }
+
         LoginManager.getInstance().registerCallback(mCallbackManager, this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -97,8 +97,6 @@ public class MainActivity extends BaseActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-        setupViewPager(viewPager);
-        tabLayout.setupWithViewPager(viewPager);
 
         setColor(footerMadeBy, footerMadeBy.getText().toString());
         setLoginLogoutViews();
@@ -107,24 +105,26 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (id) {
             case R.id.all_handling:
                 // TODO: 22.04.16 all requests
                 getSupportActionBar().setTitle(R.string.all_requests);
+                transaction.replace(R.id.content, new AllRequestsFragment());
                 break;
             case R.id.map_handling:
                 // TODO: 22.04.16 map requests
                 getSupportActionBar().setTitle(R.string.map_requests);
                 break;
             case R.id.profile:
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                getSupportActionBar().setTitle(R.string.profile);
                 transaction.replace(R.id.content, new ProfileFragment());
-                transaction.commit();
                 break;
             case R.id.log_in:
                 loginLogout();
                 break;
         }
+        transaction.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -188,7 +188,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onCancel() {
-        snackbar(tabLayout, R.string.login_cancel);
+        snackbar(toolbar, R.string.login_cancel);
     }
 
     @Override
@@ -199,14 +199,6 @@ public class MainActivity extends BaseActivity
     private void initRealm() {
         mRealmConfig = new RealmConfiguration.Builder(MainActivity.this).build();
         mRealm = Realm.getInstance(mRealmConfig);
-    }
-
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new WorkFragment(), "On the go");
-        adapter.addFragment(new DoneFragment(), "Done");
-        adapter.addFragment(new WaitFragment(), "On the wait");
-        viewPager.setAdapter(adapter);
     }
 
     private void setColor(TextView view, String fulltext) {
@@ -304,4 +296,5 @@ public class MainActivity extends BaseActivity
         mRealm.commitTransaction();
         setLoginLogoutViews();
     }
+
 }

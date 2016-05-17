@@ -19,6 +19,7 @@ public class ApiService {
     public API getApiService() {
         setHttpClient();
 
+
         Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(new Gson()))

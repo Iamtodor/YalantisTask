@@ -1,44 +1,34 @@
 package com.todor.yalantistask.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Author {
 
     @SerializedName("id")
-    @Expose
     private Integer id;
 
     @SerializedName("first_name")
-    @Expose
     private String firstName;
 
     @SerializedName("last_name")
-    @Expose
     private String lastName;
 
     @SerializedName("middle_name")
-    @Expose
     private String middleName;
 
     @SerializedName("email")
-    @Expose
     private String email;
 
     @SerializedName("birthday")
-    @Expose
     private Integer birthday;
 
     @SerializedName("phone")
-    @Expose
     private String phone;
 
     @SerializedName("address")
-    @Expose
     private Address address;
 
     @SerializedName("fb_registered")
-    @Expose
     private Integer fbRegistered;
 
     public Integer getId() {
@@ -113,4 +103,18 @@ public class Author {
         this.fbRegistered = fbRegistered;
     }
 
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", email='" + email + '\'' +
+                ", birthday=" + birthday +
+                ", phone='" + phone + '\'' +
+                ", address=" + address +
+                ", fbRegistered=" + fbRegistered +
+                '}';
+    }
 }
