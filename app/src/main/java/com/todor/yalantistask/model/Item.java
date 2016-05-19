@@ -2,13 +2,13 @@ package com.todor.yalantistask.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class Example extends RealmObject {
+public class Item extends RealmObject {
 
+    @PrimaryKey
     @SerializedName("id")
     private Integer id;
 
@@ -40,10 +40,10 @@ public class Example extends RealmObject {
     private String ticketId;
 
     @SerializedName("files")
-    private List<File> files = new ArrayList<>();
+    private RealmList<File> files;
 
     @SerializedName("performers")
-    private List<Performer> performers = new ArrayList<>();
+    private RealmList<Performer> performers;
 
     @SerializedName("deadline")
     private Integer deadline;
@@ -131,19 +131,19 @@ public class Example extends RealmObject {
         this.ticketId = ticketId;
     }
 
-    public List<File> getFiles() {
+    public RealmList<File> getFiles() {
         return files;
     }
 
-    public void setFiles(List<File> files) {
+    public void setFiles(RealmList<File> files) {
         this.files = files;
     }
 
-    public List<Performer> getPerformers() {
+    public RealmList<Performer> getPerformers() {
         return performers;
     }
 
-    public void setPerformers(List<Performer> performers) {
+    public void setPerformers(RealmList<Performer> performers) {
         this.performers = performers;
     }
 
@@ -165,7 +165,7 @@ public class Example extends RealmObject {
 
     @Override
     public String toString() {
-        return "Example{" +
+        return "Item{" +
                 "id=" + id +
                 ", user=" + user +
                 ", category=" + category +

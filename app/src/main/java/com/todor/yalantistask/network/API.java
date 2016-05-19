@@ -1,6 +1,6 @@
 package com.todor.yalantistask.network;
 
-import com.todor.yalantistask.model.Example;
+import com.todor.yalantistask.model.Item;
 
 import java.util.List;
 
@@ -13,6 +13,6 @@ public interface API {
 
     @Headers("Accept: application/json")
     @GET("/rest/v1/tickets")
-    Observable<List<Example>> getTickets(@Query("state") String state);
+    Observable<List<Item>> getTickets(@Query("state") String state);
 
 }
