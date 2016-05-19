@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
 
 public class ApiService {
 
@@ -19,12 +20,12 @@ public class ApiService {
     public API getApiService() {
         setHttpClient();
 
-
         Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(new Gson()))
-            .client(httpClient)
-            .build();
+                .baseUrl(BASE_URL)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(new Gson()))
+                .client(httpClient)
+                .build();
 
         return retrofit.create(API.class);
     }

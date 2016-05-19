@@ -21,10 +21,9 @@ import com.todor.yalantistask.utils.Utils;
 import java.util.List;
 
 import butterknife.Bind;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
@@ -52,21 +51,46 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
         ApiService apiService = new ApiService();
         API api = apiService.getApiService();
-        Call<List<Example>> call = api.getTickets("0");
 
-        call.enqueue(new Callback<List<Example>>() {
-            @Override
-            public void onResponse(Response<List<Example>> response, Retrofit retrofit) {
-                if(response.isSuccess()) {
-                    // TODO: 5/18/16 saving data will be implemented so soon
-                }
-            }
+        api.getTickets("0")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Example>>() {
+                    @Override
+                    public void onCompleted() {
 
-            @Override
-            public void onFailure(Throwable t) {
-                t.printStackTrace();
-            }
-        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Example> examples) {
+
+                    }
+                });
+
+//        api.getTickets("0")
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<List<Example>>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<Example> examples) {
+//                        Log.d(TAG, "onNext: " + examples);
+//                    }
+//                });
     }
 
     @Override
