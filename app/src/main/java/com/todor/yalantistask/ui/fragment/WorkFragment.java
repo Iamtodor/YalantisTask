@@ -75,35 +75,9 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
                     @Override
                     public void onNext(List<Item> items) {
-                        for (Item item : items) {
-                            mRealm.beginTransaction();
-                            Item itemToSave = mRealm.createObject(Item.class);
-                            Log.d(TAG, "onNext: 1");
-                            itemToSave.setBody(item.getBody());
-                            Log.d(TAG, "onNext: 2");
-                            itemToSave.setCategory(item.getCategory());
-                            Log.d(TAG, "onNext: 3");
-                            itemToSave.setCreatedDate(item.getCreatedDate());
-                            Log.d(TAG, "onNext: 4");
-                            itemToSave.setDeadline(item.getDeadline());
-                            Log.d(TAG, "onNext: 5");
-                            itemToSave.setFiles(item.getFiles());
-                            Log.d(TAG, "onNext: 6");
-                            itemToSave.setId(item.getId());
-                            Log.d(TAG, "onNext: 7");
-                            itemToSave.setLikesCounter(item.getLikesCounter());
-                            Log.d(TAG, "onNext: 8");
-                            itemToSave.setPerformers(item.getPerformers());
-                            Log.d(TAG, "onNext: 9");
-                            itemToSave.setStartDate(item.getStartDate());
-                            itemToSave.setState(item.getState());
-                            itemToSave.setTicketId(item.getTicketId());
-                            itemToSave.setTitle(item.getTitle());
-                            itemToSave.setType(item.getType());
-                            itemToSave.setUser(item.getUser());
-                            mRealm.copyToRealm(itemToSave);
-                            mRealm.commitTransaction();
-                        }
+                        mRealm.beginTransaction();
+                        mRealm.copyToRealmOrUpdate(items);
+                        mRealm.commitTransaction();
 
                         RealmResults<Item> results = mRealm.where(Item.class).findAll();
                         Log.d(TAG, "work fragment: " + results.size());
