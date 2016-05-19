@@ -2,7 +2,9 @@ package com.todor.yalantistask.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Author {
+import io.realm.RealmObject;
+
+public class Author extends RealmObject {
 
     @SerializedName("id")
     private Integer id;

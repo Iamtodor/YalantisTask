@@ -2,7 +2,9 @@ package com.todor.yalantistask.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class StreetType {
+import io.realm.RealmObject;
+
+public class StreetType extends RealmObject {
 
     @SerializedName("id")
     private Integer id;

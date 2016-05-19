@@ -80,6 +80,12 @@ public class MainActivity extends BaseActivity
         setSupportActionBar(toolbar);
         FacebookSdk.sdkInitialize(this);
         initRealm();
+
+//        RealmResults<Example> results = mRealm.where(Example.class).findAll();
+//        for(int i = 0; i < results.size(); i++) {
+//            Log.d(TAG, "onCreate: " + results.get(i));
+//        }
+
         mCallbackManager = CallbackManager.Factory.create();
 
         if(savedInstanceState == null) {
@@ -108,7 +114,6 @@ public class MainActivity extends BaseActivity
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (id) {
             case R.id.all_handling:
-                // TODO: 22.04.16 all requests
                 getSupportActionBar().setTitle(R.string.all_requests);
                 transaction.replace(R.id.content, new AllRequestsFragment());
                 break;

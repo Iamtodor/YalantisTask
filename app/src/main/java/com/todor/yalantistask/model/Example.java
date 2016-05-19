@@ -5,7 +5,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Example {
+import io.realm.RealmObject;
+
+public class Example extends RealmObject {
 
     @SerializedName("id")
     private Integer id;

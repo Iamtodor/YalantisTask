@@ -2,7 +2,9 @@ package com.todor.yalantistask.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class File {
+import io.realm.RealmObject;
+
+public class File extends RealmObject {
 
     @SerializedName("id")
     private Integer id;
@@ -37,4 +39,12 @@ public class File {
         this.filename = filename;
     }
 
+    @Override
+    public String toString() {
+        return "File{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", filename='" + filename + '\'' +
+                '}';
+    }
 }

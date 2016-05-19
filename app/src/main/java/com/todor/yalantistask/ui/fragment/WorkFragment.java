@@ -21,6 +21,8 @@ import com.todor.yalantistask.utils.Utils;
 import java.util.List;
 
 import butterknife.Bind;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -30,6 +32,8 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
     @Bind(R.id.recycler_view) protected RecyclerView recyclerView;
     @Bind(R.id.fab) protected FloatingActionButton fab;
     private List<Task> mTasks;
+    private Realm mRealm;
+    private RealmConfiguration mRealmConfig;
 
     @Override
     protected int getContentViewId() {
@@ -49,6 +53,7 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
         setFabBehavior(recyclerView, fab);
 
+        initRealm();
         ApiService apiService = new ApiService();
         API api = apiService.getApiService();
 
@@ -68,29 +73,19 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
                     @Override
                     public void onNext(List<Example> examples) {
-
+                        for(Example example : examples) {
+                            mRealm.beginTransaction();
+                            Example exampleToSave = mRealm.createObject(Example.class);
+                            exampleToSave = example;
+                            mRealm.commitTransaction();
+                        }
                     }
                 });
+    }
 
-//        api.getTickets("0")
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<List<Example>>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<Example> examples) {
-//                        Log.d(TAG, "onNext: " + examples);
-//                    }
-//                });
+    private void initRealm() {
+        mRealmConfig = new RealmConfiguration.Builder(getContext()).build();
+        mRealm = Realm.getInstance(mRealmConfig);
     }
 
     @Override

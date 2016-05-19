@@ -1,6 +1,8 @@
 package com.todor.yalantistask.model;
 
-public class Task {
+import io.realm.RealmObject;
+
+public class Task extends RealmObject {
 
     private String imgUrl;
     private String likeValue;
