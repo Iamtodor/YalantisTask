@@ -1,10 +1,13 @@
 package com.todor.yalantistask.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class User extends RealmObject {
 
     private String name;
+
+    @PrimaryKey
     private String email;
     private String profileIcon;
     private String birthday;

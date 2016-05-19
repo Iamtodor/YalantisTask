@@ -84,12 +84,6 @@ public class MainActivity extends BaseActivity
         FacebookSdk.sdkInitialize(this);
         initRealm();
 
-        RealmResults<Item> results = mRealm.where(Item.class).findAll();
-        Log.d(TAG, "onCreate: 123" + results.size());
-        for(int i = 0; i < results.size(); i++) {
-            Log.d(TAG, "onCreate: " + results.get(i));
-        }
-
         mCallbackManager = CallbackManager.Factory.create();
 
         if(savedInstanceState == null) {
@@ -295,13 +289,14 @@ public class MainActivity extends BaseActivity
 
         mRealm.beginTransaction();
 
-        mUser = mRealm.createObject(User.class);
+        mUser = new User();
         mUser.setEmail(object.getString(EMAIL));
         mUser.setBirthday(object.getString(BIRTHDAY));
         mUser.setName(object.getString(NAME));
 
         mUser.setProfileIcon(profileIconUrl);
         mUser.setToken(token);
+        mRealm.copyToRealmOrUpdate(mUser);
         mRealm.commitTransaction();
         setLoginLogoutViews();
     }
