@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.interfaces.OnItemClickListener;
 
@@ -41,12 +41,12 @@ public class ImageTaskRecyclerViewAdapter extends RecyclerView.Adapter<ImageTask
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (mImagesUrl != null && mImagesUrl.size() > 0) {
             holder.bind(mOnImageClickListener);
-            Picasso.with(mContext)
+            Glide.with(mContext)
                     .load(mImagesUrl.get(position))
                     .into(holder.image);
         } else if (mImageIds != null && mImageIds.length > 0) {
             holder.bind(mOnImageClickListener);
-            Picasso.with(mContext)
+            Glide.with(mContext)
                     .load(mImageIds[position])
                     .into(holder.image);
         }
@@ -59,7 +59,7 @@ public class ImageTaskRecyclerViewAdapter extends RecyclerView.Adapter<ImageTask
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView image; //[Comment] Wrong visibility modifier
+        private ImageView image;
 
         public ViewHolder(View itemView) {
             super(itemView);
