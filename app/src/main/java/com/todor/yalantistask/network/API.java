@@ -13,6 +13,6 @@ public interface API {
 
     @Headers("Accept: application/json")
     @GET("/rest/v1/tickets")
-    Observable<List<Item>> getTickets(@Query("state") String state);
+    Observable<List<Item>> getData(@Query("state") String state);
 
 }

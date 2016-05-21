@@ -18,7 +18,6 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +32,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.todor.yalantistask.R;
-import com.todor.yalantistask.model.Item;
+import com.todor.yalantistask.model.CurrentUser;
 import com.todor.yalantistask.model.User;
 import com.todor.yalantistask.ui.fragment.AllRequestsFragment;
 import com.todor.yalantistask.ui.fragment.ProfileFragment;
@@ -46,7 +45,6 @@ import java.util.Arrays;
 import butterknife.Bind;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmResults;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, FacebookCallback<LoginResult> {
@@ -67,7 +65,7 @@ public class MainActivity extends BaseActivity
     @Bind(R.id.nav_view) protected NavigationView navigationView;
 
     private CallbackManager mCallbackManager;
-    private User mUser;
+    private CurrentUser mUser;
     private Realm mRealm;
     private RealmConfiguration mRealmConfig;
 
@@ -277,7 +275,7 @@ public class MainActivity extends BaseActivity
     }
 
     private boolean isCurrentUserExists() {
-        User user = mRealm.where(User.class).findFirst();
+        CurrentUser user = mRealm.where(CurrentUser.class).findFirst();
         if (user != null)
             return !TextUtils.isEmpty(user.getToken());
         return false;
@@ -289,7 +287,7 @@ public class MainActivity extends BaseActivity
 
         mRealm.beginTransaction();
 
-        mUser = new User();
+        mUser = new CurrentUser();
         mUser.setEmail(object.getString(EMAIL));
         mUser.setBirthday(object.getString(BIRTHDAY));
         mUser.setName(object.getString(NAME));

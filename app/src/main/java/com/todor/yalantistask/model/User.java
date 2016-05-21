@@ -1,24 +1,68 @@
 package com.todor.yalantistask.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 public class User extends RealmObject {
 
-    private String name;
+    @SerializedName("id")
+    private Integer id;
 
-    @PrimaryKey
+    @SerializedName("first_name")
+    private String firstName;
+
+    @SerializedName("last_name")
+    private String lastName;
+
+    @SerializedName("middle_name")
+    private String middleName;
+
+    @SerializedName("email")
     private String email;
-    private String profileIcon;
-    private String birthday;
-    private String token;
 
-    public String getName() {
-        return name;
+    @SerializedName("birthday")
+    private Integer birthday;
+
+    @SerializedName("phone")
+    private String phone;
+
+    @SerializedName("address")
+    private Address address;
+
+    @SerializedName("fb_registered")
+    private Integer fbRegistered;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     public String getEmail() {
@@ -29,37 +73,51 @@ public class User extends RealmObject {
         this.email = email;
     }
 
-    public String getProfileIcon() {
-        return profileIcon;
-    }
-
-    public void setProfileIcon(String icon) {
-        this.profileIcon = icon;
-    }
-
-    public String getBirthday() {
+    public Integer getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Integer birthday) {
         this.birthday = birthday;
     }
 
-    public String getToken() {
-        return token;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Integer getFbRegistered() {
+        return fbRegistered;
+    }
+
+    public void setFbRegistered(Integer fbRegistered) {
+        this.fbRegistered = fbRegistered;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", middleName='" + middleName + '\'' +
                 ", email='" + email + '\'' +
-                ", profileIcon='" + profileIcon + '\'' +
-                ", birthday='" + birthday + '\'' +
+                ", birthday=" + birthday +
+                ", phone='" + phone + '\'' +
+                ", address=" + address +
+                ", fbRegistered=" + fbRegistered +
                 '}';
     }
+
 }

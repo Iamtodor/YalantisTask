@@ -59,7 +59,7 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
         ApiService apiService = new ApiService();
         API api = apiService.getApiService();
 
-        api.getTickets("0")
+        api.getData("0,9,5,7,8")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Item>>() {

@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.todor.yalantistask.R;
-import com.todor.yalantistask.model.User;
+import com.todor.yalantistask.model.CurrentUser;
 import com.todor.yalantistask.utils.CircleTransform;
 import com.todor.yalantistask.utils.StrokeTransform;
 
@@ -35,7 +35,7 @@ public class ProfileFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         initRealm();
-        final User user = mRealm.where(User.class).findFirst();
+        final CurrentUser user = mRealm.where(CurrentUser.class).findFirst();
         Glide.with(getContext())
                 .load(user.getProfileIcon())
                 .asBitmap()
