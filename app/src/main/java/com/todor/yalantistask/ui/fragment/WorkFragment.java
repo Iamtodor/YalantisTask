@@ -51,7 +51,7 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new WorkAdapter(getActivity(), mTasks, this));
+//        recyclerView.setAdapter(new WorkAdapter(getActivity(), mTasks, this));
 
         setFabBehavior(recyclerView, fab);
 
@@ -84,6 +84,7 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
                         for(int i = 0; i < results.size(); i++) {
                             Log.d(TAG, "work fragment: " + results.get(i));
                         }
+                        recyclerView.setAdapter(new WorkAdapter(getActivity(), results, WorkFragment.this));
                     }
                 });
     }

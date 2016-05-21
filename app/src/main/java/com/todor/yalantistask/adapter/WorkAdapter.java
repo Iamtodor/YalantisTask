@@ -11,20 +11,23 @@ import android.widget.TextView;
 
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.interfaces.OnItemClickListener;
-import com.todor.yalantistask.model.Task;
+import com.todor.yalantistask.model.Item;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.realm.RealmResults;
 
 public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolderProductItem> {
 
     private Context mContext;
-    private List<Task> mTasks;
+    private RealmResults<Item> mTasks;
     private OnItemClickListener onItemClickListener;
 
-    public WorkAdapter(Context mContext, List<Task> tasks, OnItemClickListener onItemClickListener) {
+    public WorkAdapter(Context mContext, RealmResults<Item> tasks, OnItemClickListener onItemClickListener) {
         this.mContext = mContext;
         this.mTasks = tasks;
         this.onItemClickListener = onItemClickListener;
@@ -37,19 +40,28 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolderProd
 
     @Override
     public void onBindViewHolder(ViewHolderProductItem holder, int position) {
-        Task task = mTasks.get(position);
+        Item task = mTasks.get(position);
 //        Picasso.with(mContext).load(task.getImgUrl()).error(R.drawable.image1).into(holder.imageCategory);
-        holder.likeValue.setText(task.getLikeValue());
-        holder.header.setText(task.getHeader());
-        holder.address.setText(task.getAddress());
-        holder.date.setText(task.getDate());
-        holder.expectedTime.setText(task.getExpiredTime());
+        holder.likeValue.setText(String.valueOf(task.getLikesCounter()));
+        holder.header.setText(task.getCategory().getName());
+        String address = task.getUser().getAddress().getCity().getRuName();
+        holder.address.setText(address);
+
+        holder.date.setText(getStringDataFromMillis(task.getCreatedDate()));
+        holder.expectedTime.setText(getStringDataFromMillis(task.getDeadline()));
+
         holder.bind(onItemClickListener);
     }
 
     @Override
     public int getItemCount() {
         return mTasks.size();
+    }
+
+    private String getStringDataFromMillis(long millis) {
+        Date date = new Date(millis);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy", new Locale("uk_UA"));
+        return simpleDateFormat.format(date);
     }
 
     static class ViewHolderProductItem extends RecyclerView.ViewHolder {
