@@ -1,14 +1,16 @@
 package com.todor.yalantistask.utils;
 
 import android.content.Context;
-import android.os.Build;
 
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.model.Task;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public final class Utils {
 
@@ -27,14 +29,20 @@ public final class Utils {
         for (int i = 0; i < 10; i++) {
             Task task = new Task();
             task.setAddress("address " + i);
-            task.setDate("date " + i);
-            task.setExpiredTime("exp date " + i);
+            task.setDate("createdDate " + i);
+            task.setExpiredTime("exp createdDate " + i);
             task.setHeader("header " + i);
             task.setImgUrl("img " + i);
             task.setLikeValue(String.valueOf(i));
             mTasks.add(task);
         }
         return mTasks;
+    }
+
+    public static String getStringDataFromMillis(long millis) {
+        Date date = new Date(millis);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy", new Locale("uk_UA"));
+        return simpleDateFormat.format(date);
     }
 
 }

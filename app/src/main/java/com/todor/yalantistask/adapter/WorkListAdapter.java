@@ -18,13 +18,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.realm.RealmResults;
 
-public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolderProductItem> {
+public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHolderProductItem> {
 
     private Context mContext;
     private RealmResults<Item> mTasks;
     private OnItemClickListener onItemClickListener;
 
-    public WorkAdapter(Context mContext, RealmResults<Item> tasks, OnItemClickListener onItemClickListener) {
+    public WorkListAdapter(Context mContext, RealmResults<Item> tasks, OnItemClickListener onItemClickListener) {
         this.mContext = mContext;
         this.mTasks = tasks;
         this.onItemClickListener = onItemClickListener;
