@@ -6,19 +6,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.adapter.WorkAdapter;
 import com.todor.yalantistask.interfaces.OnItemClickListener;
 import com.todor.yalantistask.model.Item;
-import com.todor.yalantistask.model.Task;
 import com.todor.yalantistask.network.API;
 import com.todor.yalantistask.network.ApiService;
 import com.todor.yalantistask.ui.activity.DetailsActivity;
-import com.todor.yalantistask.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -33,7 +31,6 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
     @Bind(R.id.recycler_view) protected RecyclerView recyclerView;
     @Bind(R.id.fab) protected FloatingActionButton fab;
-    private List<Task> mTasks;
     private Realm mRealm;
     private RealmConfiguration mRealmConfig;
 
@@ -44,18 +41,28 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        initRealm();
 
-        mTasks = Utils.getTasks();
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         recyclerView.setItemAnimator(itemAnimator);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.setAdapter(new WorkAdapter(getActivity(), mTasks, this));
+
+        RealmResults<Item> modelFromDB = mRealm.where(Item.class).findAll();
+        List<Item> modelForAdapter = new ArrayList<>();
+
+        for(Item item : modelFromDB) {
+            if(item.getState().getId() == 0 |item.getState().getId() == 5 |item.getState().getId() == 7 |
+                    item.getState().getId() == 8 |item.getState().getId() == 9) {
+                modelForAdapter.add(item);
+            }
+        }
+
+        recyclerView.setAdapter(new WorkAdapter(getActivity(), modelForAdapter, this));
 
         setFabBehavior(recyclerView, fab);
 
-        initRealm();
         ApiService apiService = new ApiService();
         API api = apiService.getApiService();
 
@@ -80,10 +87,6 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
                         mRealm.commitTransaction();
 
                         RealmResults<Item> results = mRealm.where(Item.class).findAll();
-                        Log.d(TAG, "work fragment: " + results.size());
-                        for(int i = 0; i < results.size(); i++) {
-                            Log.d(TAG, "work fragment: " + results.get(i));
-                        }
                         recyclerView.setAdapter(new WorkAdapter(getActivity(), results, WorkFragment.this));
                     }
                 });

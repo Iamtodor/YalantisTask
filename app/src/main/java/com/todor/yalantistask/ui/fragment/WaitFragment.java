@@ -1,29 +1,36 @@
 package com.todor.yalantistask.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.todor.yalantistask.R;
+import com.todor.yalantistask.adapter.WorkAdapter;
 import com.todor.yalantistask.interfaces.OnItemClickListener;
-import com.todor.yalantistask.model.Task;
+import com.todor.yalantistask.model.Item;
 import com.todor.yalantistask.network.API;
 import com.todor.yalantistask.network.ApiService;
-import com.todor.yalantistask.utils.Utils;
+import com.todor.yalantistask.ui.activity.DetailsActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
     @Bind(R.id.recycler_view) protected RecyclerView recyclerView;
     @Bind(R.id.fab) protected FloatingActionButton fab;
-    private List<Task> mTasks;
     private RealmConfiguration mRealmConfig;
     private Realm mRealm;
 
@@ -34,47 +41,53 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mTasks = Utils.getTasks();
+        initRealm();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.setAdapter(new WorkAdapter(getActivity(), mTasks, this));
+
+        RealmResults<Item> modelFromDB = mRealm.where(Item.class).findAll();
+        List<Item> modelForAdapter = new ArrayList<>();
+
+        for(Item item : modelFromDB) {
+            if(item.getState().getId() == 1 |item.getState().getId() == 3 |item.getState().getId() == 4) {
+                modelForAdapter.add(item);
+            }
+        }
+
+        recyclerView.setAdapter(new WorkAdapter(getActivity(), modelForAdapter, this));
 
         setFabBehavior(recyclerView, fab);
 
-        initRealm();
         ApiService apiService = new ApiService();
         API api = apiService.getApiService();
 
-//        api.getData("10,6")
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<List<Item>>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<Item> items) {
-//                        mRealm.beginTransaction();
-//                        mRealm.copyToRealmOrUpdate(items);
-//                        mRealm.commitTransaction();
-//
-//                        RealmResults<Item> results = mRealm.where(Item.class).findAll();
-//                        Log.d(TAG, "wait fragment: " + results.size());
-//                        for(int i = 0; i < results.size(); i++) {
-//                            Log.d(TAG, "wait fragment: " + results.get(i));
-//                        }
-//                    }
-//                });
+        api.getData("1,3,4")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Item>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Item> items) {
+                        mRealm.beginTransaction();
+                        mRealm.copyToRealmOrUpdate(items);
+                        mRealm.commitTransaction();
+
+                        Log.d(TAG, "onNext: " + items);
+
+                        RealmResults<Item> results = mRealm.where(Item.class).findAll();
+                        recyclerView.setAdapter(new WorkAdapter(getActivity(), results, WaitFragment.this));
+                    }
+                });
     }
 
     private void initRealm() {
@@ -84,6 +97,6 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
     @Override
     public void onItemClick(int position) {
-
+        startActivity(new Intent(getContext(), DetailsActivity.class));
     }
 }
