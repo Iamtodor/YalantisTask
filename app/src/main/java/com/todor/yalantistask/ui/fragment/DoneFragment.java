@@ -9,7 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.todor.yalantistask.R;
+import com.todor.yalantistask.adapter.WorkAdapter;
 import com.todor.yalantistask.interfaces.OnItemClickListener;
+import com.todor.yalantistask.model.Item;
 import com.todor.yalantistask.model.Task;
 import com.todor.yalantistask.network.API;
 import com.todor.yalantistask.network.ApiService;
@@ -21,6 +23,10 @@ import java.util.List;
 import butterknife.Bind;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class DoneFragment extends BaseFragment implements OnItemClickListener {
 
@@ -53,33 +59,35 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
         ApiService apiService = new ApiService();
         API api = apiService.getApiService();
 
-//        api.getData("10,6")
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<List<Item>>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<Item> items) {
-//                        mRealm.beginTransaction();
-//                        mRealm.copyToRealmOrUpdate(items);
-//                        mRealm.commitTransaction();
-//
-//                        RealmResults<Item> results = mRealm.where(Item.class).findAll();
-//                        Log.d(TAG, "Done fragment: " + results.size());
-//                        for(int i = 0; i < results.size(); i++) {
-//                            Log.d(TAG, "Done fragment: " + results.get(i));
-//                        }
-//                    }
-//                });
+        api.getData("10,6")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Item>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(final List<Item> items) {
+
+                        mRealm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                realm.copyToRealmOrUpdate(items);
+                            }
+                        });
+                        mRealm.close();
+
+                        RealmResults<Item> results = mRealm.where(Item.class).findAll();
+                        recyclerView.setAdapter(new WorkAdapter(getActivity(), results, DoneFragment.this));
+                    }
+                });
     }
 
     private void initRealm() {
