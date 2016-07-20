@@ -3,6 +3,7 @@ package com.todor.yalantistask.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.todor.yalantistask.network.API;
 import com.todor.yalantistask.network.ApiService;
 import com.todor.yalantistask.ui.activity.DetailsActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -43,10 +45,24 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+        initRealm();
+
+        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        recyclerView.setItemAnimator(itemAnimator);
+
+        RealmResults<Item> modelFromDB = mRealm.where(Item.class).findAll();
+        List<Item> modelForAdapter = new ArrayList<>();
+
+        for(Item item : modelFromDB) {
+            if(item.getState().getId() == 6 |item.getState().getId() == 10) {
+                modelForAdapter.add(item);
+            }
+        }
+
+        recyclerView.setAdapter(new WorkAdapter(getActivity(), modelForAdapter, this));
 
         setFabBehavior(recyclerView, fab);
 
-        initRealm();
         ApiService apiService = new ApiService();
         API api = apiService.getApiService();
 

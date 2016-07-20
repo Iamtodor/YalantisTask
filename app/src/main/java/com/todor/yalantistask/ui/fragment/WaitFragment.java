@@ -1,9 +1,12 @@
 package com.todor.yalantistask.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.todor.yalantistask.R;
@@ -12,7 +15,9 @@ import com.todor.yalantistask.interfaces.OnItemClickListener;
 import com.todor.yalantistask.model.Item;
 import com.todor.yalantistask.network.API;
 import com.todor.yalantistask.network.ApiService;
+import com.todor.yalantistask.ui.activity.DetailsActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -43,14 +48,27 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+        initRealm();
 
+        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        recyclerView.setItemAnimator(itemAnimator);
+
+        RealmResults<Item> modelFromDB = mRealm.where(Item.class).findAll();
+        List<Item> modelForAdapter = new ArrayList<>();
+
+        for(Item item : modelFromDB) {
+            if(item.getState().getId() == 1 |item.getState().getId() == 3 |item.getState().getId() == 4) {
+                modelForAdapter.add(item);
+            }
+        }
+
+        recyclerView.setAdapter(new WorkAdapter(getActivity(), modelForAdapter, this));
         setFabBehavior(recyclerView, fab);
 
-        initRealm();
         ApiService apiService = new ApiService();
         API api = apiService.getApiService();
 
-        api.getData("10,6")
+        api.getData("1,3,4")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Item>>() {
@@ -82,6 +100,6 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
     @Override
     public void onItemClick(int position) {
-
+        startActivity(new Intent(getContext(), DetailsActivity.class));
     }
 }

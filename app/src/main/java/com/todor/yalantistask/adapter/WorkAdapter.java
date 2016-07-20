@@ -14,17 +14,18 @@ import com.todor.yalantistask.interfaces.OnItemClickListener;
 import com.todor.yalantistask.model.Item;
 import com.todor.yalantistask.utils.Utils;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.realm.RealmResults;
 
 public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolderProductItem> {
 
     private Context mContext;
-    private RealmResults<Item> mTasks;
+    private List<Item> mTasks;
     private OnItemClickListener onItemClickListener;
 
-    public WorkAdapter(Context mContext, RealmResults<Item> tasks, OnItemClickListener onItemClickListener) {
+    public WorkAdapter(Context mContext, List<Item> tasks, OnItemClickListener onItemClickListener) {
         this.mContext = mContext;
         this.mTasks = tasks;
         this.onItemClickListener = onItemClickListener;

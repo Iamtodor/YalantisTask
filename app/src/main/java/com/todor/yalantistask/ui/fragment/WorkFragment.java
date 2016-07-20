@@ -3,11 +3,13 @@ package com.todor.yalantistask.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.todor.yalantistask.R;
+import com.todor.yalantistask.adapter.WorkAdapter;
 import com.todor.yalantistask.adapter.WorkListAdapter;
 import com.todor.yalantistask.interfaces.OnItemClickListener;
 import com.todor.yalantistask.model.Item;
@@ -27,7 +29,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static io.realm.Realm.*;
+import static io.realm.Realm.getInstance;
 
 public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
@@ -48,10 +50,25 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+        initRealm();
+
+        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        recyclerView.setItemAnimator(itemAnimator);
+
+        RealmResults<Item> modelFromDB = mRealm.where(Item.class).findAll();
+        List<Item> modelForAdapter = new ArrayList<>();
+
+        for(Item item : modelFromDB) {
+            if(item.getState().getId() == 0 |item.getState().getId() == 5 |item.getState().getId() == 7 |
+                    item.getState().getId() == 8 |item.getState().getId() == 9) {
+                modelForAdapter.add(item);
+            }
+        }
+
+        recyclerView.setAdapter(new WorkAdapter(getActivity(), modelForAdapter, this));
 
         setFabBehavior(recyclerView, fab);
 
-        initRealm();
         ApiService apiService = new ApiService();
         API api = apiService.getApiService();
 
