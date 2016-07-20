@@ -67,12 +67,7 @@ public class ImageTaskRecyclerViewAdapter extends RecyclerView.Adapter<ImageTask
         }
 
         public void bind(final OnItemClickListener onImageClickListener) {
-            image.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onImageClickListener.onItemClick(getAdapterPosition());
-                }
-            });
+            image.setOnClickListener(v -> onImageClickListener.onItemClick(getAdapterPosition()));
         }
 
     }

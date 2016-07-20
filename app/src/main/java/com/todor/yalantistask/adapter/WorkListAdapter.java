@@ -77,12 +77,7 @@ public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHo
         }
 
         public void bind(final OnItemClickListener onImageClickListener) {
-            item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onImageClickListener.onItemClick(getAdapterPosition());
-                }
-            });
+            item.setOnClickListener(v -> onImageClickListener.onItemClick(getAdapterPosition()));
         }
 
     }

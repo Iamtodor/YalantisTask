@@ -7,12 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.todor.yalantistask.R;
+import com.todor.yalantistask.adapter.WorkAdapter;
 import com.todor.yalantistask.interfaces.OnItemClickListener;
 import com.todor.yalantistask.model.Item;
-import com.todor.yalantistask.model.Task;
 import com.todor.yalantistask.network.API;
 import com.todor.yalantistask.network.ApiService;
-import com.todor.yalantistask.utils.Utils;
 
 import java.util.List;
 
@@ -24,11 +23,12 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static io.realm.Realm.*;
+
 public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
     @Bind(R.id.recycler_view) protected RecyclerView recyclerView;
     @Bind(R.id.fab) protected FloatingActionButton fab;
-    private List<Task> mTasks;
     private RealmConfiguration mRealmConfig;
     private Realm mRealm;
 
@@ -40,8 +40,6 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mTasks = Utils.getTasks();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -67,22 +65,19 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
                     }
 
                     @Override
-                    public void onNext(List<Item> items) {
-                        mRealm.beginTransaction();
-                        mRealm.copyToRealmOrUpdate(items);
-                        mRealm.commitTransaction();
+                    public void onNext(final List<Item> items) {
+                        mRealm.executeTransaction(realm -> realm.copyToRealmOrUpdate(items));
+                        mRealm.close();
 
                         RealmResults<Item> results = mRealm.where(Item.class).findAll();
-                        for(int i = 0; i < results.size(); i++) {
-
-                        }
+                        recyclerView.setAdapter(new WorkAdapter(getActivity(), results, WaitFragment.this));
                     }
                 });
     }
 
     private void initRealm() {
         mRealmConfig = new RealmConfiguration.Builder(getContext()).build();
-        mRealm = Realm.getInstance(mRealmConfig);
+        mRealm = getInstance(mRealmConfig);
     }
 
     @Override

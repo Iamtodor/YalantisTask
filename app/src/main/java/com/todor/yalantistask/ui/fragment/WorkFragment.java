@@ -3,7 +3,6 @@ package com.todor.yalantistask.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,11 +12,9 @@ import com.todor.yalantistask.adapter.WorkListAdapter;
 import com.todor.yalantistask.interfaces.OnItemClickListener;
 import com.todor.yalantistask.model.Item;
 import com.todor.yalantistask.model.State;
-import com.todor.yalantistask.model.Task;
 import com.todor.yalantistask.network.API;
 import com.todor.yalantistask.network.ApiService;
 import com.todor.yalantistask.ui.activity.DetailsActivity;
-import com.todor.yalantistask.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +27,12 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static io.realm.Realm.*;
+
 public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
     @Bind(R.id.recycler_view) protected RecyclerView recyclerView;
     @Bind(R.id.fab) protected FloatingActionButton fab;
-    private List<Task> mTasks;
     private Realm mRealm;
     private RealmConfiguration mRealmConfig;
     private List<Item> mFilteredItems;
@@ -46,25 +44,24 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
-        mTasks = Utils.getTasks();
-        initRealm();
-        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-        recyclerView.setItemAnimator(itemAnimator);
+        super.onViewCreated(view, savedInstanceState);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        RealmResults<Item> results = mRealm.where(Item.class)
+
+        setFabBehavior(recyclerView, fab);
+
+        initRealm();
+        ApiService apiService = new ApiService();
+        API api = apiService.getApiService();
+
+        RealmResults<Item> results = mRealm
+                .where(Item.class)
                 .findAll();
 
         mFilteredItems = getFilteredResult(results);
 
         recyclerView.setAdapter(new WorkListAdapter(getActivity(), mFilteredItems, WorkFragment.this));
-
-        setFabBehavior(recyclerView, fab);
-
-        ApiService apiService = new ApiService();
-        API api = apiService.getApiService();
 
         api.getData("0,9,5,7,8")
                 .subscribeOn(Schedulers.io())
@@ -81,14 +78,11 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
                     }
 
                     @Override
-                    public void onNext(List<Item> items) {
-                        mRealm.beginTransaction();
-                        mRealm.copyToRealmOrUpdate(items);
-                        mRealm.commitTransaction();
+                    public void onNext(final List<Item> items) {
+                        mRealm.executeTransaction(realm -> realm.copyToRealmOrUpdate(items));
+                        mRealm.close();
 
                         RealmResults<Item> results = mRealm.where(Item.class).findAll();
-//                        realm.where(Item.class).equalTo("state.id", ids)
-
                         mFilteredItems = getFilteredResult(results);
 
                         recyclerView.setAdapter(new WorkListAdapter(getActivity(), mFilteredItems, WorkFragment.this));
@@ -98,9 +92,9 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
     private List<Item> getFilteredResult(RealmResults<Item> results) {
         List<Item> filteredResult = new ArrayList<>();
-        for(Item item : results) {
+        for (Item item : results) {
             State state = item.getState();
-            if(state.getId() == 0 | state.getId() == 5 | state.getId() == 7 | state.getId() == 8 |
+            if (state.getId() == 0 | state.getId() == 5 | state.getId() == 7 | state.getId() == 8 |
                     state.getId() == 9) {
                 filteredResult.add(item);
             }
@@ -110,7 +104,7 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
     private void initRealm() {
         mRealmConfig = new RealmConfiguration.Builder(getContext()).build();
-        mRealm = Realm.getInstance(mRealmConfig);
+        mRealm = getInstance(mRealmConfig);
     }
 
     @Override
