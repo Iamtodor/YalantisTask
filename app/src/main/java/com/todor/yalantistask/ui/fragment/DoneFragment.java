@@ -12,6 +12,7 @@ import com.todor.yalantistask.R;
 import com.todor.yalantistask.adapter.WorkAdapter;
 import com.todor.yalantistask.interfaces.OnItemClickListener;
 import com.todor.yalantistask.model.Item;
+import com.todor.yalantistask.model.ItemDAO;
 import com.todor.yalantistask.network.API;
 import com.todor.yalantistask.network.ApiService;
 import com.todor.yalantistask.ui.activity.DetailsActivity;
@@ -58,7 +59,7 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
             }
         }
 
-        recyclerView.setAdapter(new WorkAdapter(getActivity(), modelForAdapter, this));
+        recyclerView.setAdapter(new WorkAdapter(getActivity(), ItemDAO.getItemsForDone(getContext()), this));
 
         setFabBehavior(recyclerView, fab);
 

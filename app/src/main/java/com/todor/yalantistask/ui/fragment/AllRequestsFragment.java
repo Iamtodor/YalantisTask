@@ -1,7 +1,6 @@
 package com.todor.yalantistask.ui.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -22,7 +21,7 @@ public class AllRequestsFragment extends BaseFragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
     }

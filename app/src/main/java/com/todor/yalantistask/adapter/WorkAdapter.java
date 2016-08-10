@@ -59,8 +59,6 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolderProd
         return mTasks.size();
     }
 
-
-
     static class ViewHolderProductItem extends RecyclerView.ViewHolder {
 
         @Bind(R.id.item) protected LinearLayout item;
