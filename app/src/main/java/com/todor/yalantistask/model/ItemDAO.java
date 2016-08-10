@@ -18,12 +18,7 @@ public class ItemDAO {
         RealmConfiguration realmConfig = new RealmConfiguration.Builder(context).build();
         Realm realm = Realm.getInstance(realmConfig);
 
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                modelFromDB = realm.where(Item.class).findAll();
-            }
-        });
+        realm.executeTransaction(realm1 -> modelFromDB = realm1.where(Item.class).findAll());
         realm.close();
 
         for (Item item : modelFromDB) {

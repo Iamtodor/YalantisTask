@@ -3,6 +3,7 @@ package com.todor.yalantistask.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,6 +28,8 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static io.realm.Realm.*;
+
 public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
     @Bind(R.id.recycler_view) protected RecyclerView recyclerView;
@@ -41,10 +44,14 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        initRealm();
+        super.onViewCreated(view, savedInstanceState);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+        initRealm();
+
+        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        recyclerView.setItemAnimator(itemAnimator);
 
         RealmResults<Item> modelFromDB = mRealm.where(Item.class).findAll();
         List<Item> modelForAdapter = new ArrayList<>();
@@ -56,7 +63,6 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
         }
 
         recyclerView.setAdapter(new WorkAdapter(getActivity(), modelForAdapter, this));
-
         setFabBehavior(recyclerView, fab);
 
         ApiService apiService = new ApiService();
@@ -77,12 +83,9 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
                     }
 
                     @Override
-                    public void onNext(List<Item> items) {
-                        mRealm.beginTransaction();
-                        mRealm.copyToRealmOrUpdate(items);
-                        mRealm.commitTransaction();
-
-                        Log.d(TAG, "onNext: " + items);
+                    public void onNext(final List<Item> items) {
+                        mRealm.executeTransaction(realm -> realm.copyToRealmOrUpdate(items));
+                        mRealm.close();
 
                         RealmResults<Item> results = mRealm.where(Item.class).findAll();
                         recyclerView.setAdapter(new WorkAdapter(getActivity(), results, WaitFragment.this));
@@ -92,7 +95,7 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
     private void initRealm() {
         mRealmConfig = new RealmConfiguration.Builder(getContext()).build();
-        mRealm = Realm.getInstance(mRealmConfig);
+        mRealm = getInstance(mRealmConfig);
     }
 
     @Override

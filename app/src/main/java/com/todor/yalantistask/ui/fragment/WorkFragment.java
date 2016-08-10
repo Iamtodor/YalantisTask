@@ -10,8 +10,10 @@ import android.view.View;
 
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.adapter.WorkAdapter;
+import com.todor.yalantistask.adapter.WorkListAdapter;
 import com.todor.yalantistask.interfaces.OnItemClickListener;
 import com.todor.yalantistask.model.Item;
+import com.todor.yalantistask.model.State;
 import com.todor.yalantistask.network.API;
 import com.todor.yalantistask.network.ApiService;
 import com.todor.yalantistask.ui.activity.DetailsActivity;
@@ -27,12 +29,15 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static io.realm.Realm.getInstance;
+
 public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
     @Bind(R.id.recycler_view) protected RecyclerView recyclerView;
     @Bind(R.id.fab) protected FloatingActionButton fab;
     private Realm mRealm;
     private RealmConfiguration mRealmConfig;
+    private List<Item> mFilteredItems;
 
     @Override
     protected int getContentViewId() {
@@ -41,13 +46,14 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
         initRealm();
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         recyclerView.setItemAnimator(itemAnimator);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
 
         RealmResults<Item> modelFromDB = mRealm.where(Item.class).findAll();
         List<Item> modelForAdapter = new ArrayList<>();
@@ -66,6 +72,14 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
         ApiService apiService = new ApiService();
         API api = apiService.getApiService();
 
+        RealmResults<Item> results = mRealm
+                .where(Item.class)
+                .findAll();
+
+        mFilteredItems = getFilteredResult(results);
+
+        recyclerView.setAdapter(new WorkListAdapter(getActivity(), mFilteredItems, WorkFragment.this));
+
         api.getData("0,9,5,7,8")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -81,20 +95,33 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
                     }
 
                     @Override
-                    public void onNext(List<Item> items) {
-                        mRealm.beginTransaction();
-                        mRealm.copyToRealmOrUpdate(items);
-                        mRealm.commitTransaction();
+                    public void onNext(final List<Item> items) {
+                        mRealm.executeTransaction(realm -> realm.copyToRealmOrUpdate(items));
+                        mRealm.close();
 
                         RealmResults<Item> results = mRealm.where(Item.class).findAll();
-                        recyclerView.setAdapter(new WorkAdapter(getActivity(), results, WorkFragment.this));
+                        mFilteredItems = getFilteredResult(results);
+
+                        recyclerView.setAdapter(new WorkListAdapter(getActivity(), mFilteredItems, WorkFragment.this));
                     }
                 });
     }
 
+    private List<Item> getFilteredResult(RealmResults<Item> results) {
+        List<Item> filteredResult = new ArrayList<>();
+        for (Item item : results) {
+            State state = item.getState();
+            if (state.getId() == 0 | state.getId() == 5 | state.getId() == 7 | state.getId() == 8 |
+                    state.getId() == 9) {
+                filteredResult.add(item);
+            }
+        }
+        return filteredResult;
+    }
+
     private void initRealm() {
         mRealmConfig = new RealmConfiguration.Builder(getContext()).build();
-        mRealm = Realm.getInstance(mRealmConfig);
+        mRealm = getInstance(mRealmConfig);
     }
 
     @Override

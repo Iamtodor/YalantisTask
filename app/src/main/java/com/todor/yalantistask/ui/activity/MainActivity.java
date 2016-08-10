@@ -28,7 +28,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.todor.yalantistask.R;
@@ -170,14 +169,11 @@ public class MainActivity extends BaseActivity
     public void onSuccess(final LoginResult loginResult) {
         GraphRequest request = GraphRequest.newMeRequest(
                 loginResult.getAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject jsonUser, GraphResponse response) {
-                        try {
-                            saveCurrentUser(jsonUser, loginResult);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                (jsonUser, response) -> {
+                    try {
+                        saveCurrentUser(jsonUser, loginResult);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 });
 
@@ -276,9 +272,7 @@ public class MainActivity extends BaseActivity
 
     private boolean isCurrentUserExists() {
         CurrentUser user = mRealm.where(CurrentUser.class).findFirst();
-        if (user != null)
-            return !TextUtils.isEmpty(user.getToken());
-        return false;
+        return user != null && !TextUtils.isEmpty(user.getToken());
     }
 
     private void saveCurrentUser(JSONObject object, LoginResult loginResult) throws JSONException {

@@ -42,13 +42,14 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
         initRealm();
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         recyclerView.setItemAnimator(itemAnimator);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
 
         RealmResults<Item> modelFromDB = mRealm.where(Item.class).findAll();
         List<Item> modelForAdapter = new ArrayList<>();
@@ -81,10 +82,10 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
                     }
 
                     @Override
-                    public void onNext(List<Item> items) {
-                        mRealm.beginTransaction();
-                        mRealm.copyToRealmOrUpdate(items);
-                        mRealm.commitTransaction();
+                    public void onNext(final List<Item> items) {
+
+                        mRealm.executeTransaction(realm -> realm.copyToRealmOrUpdate(items));
+                        mRealm.close();
 
                         RealmResults<Item> results = mRealm.where(Item.class).findAll();
                         recyclerView.setAdapter(new WorkAdapter(getActivity(), results, DoneFragment.this));

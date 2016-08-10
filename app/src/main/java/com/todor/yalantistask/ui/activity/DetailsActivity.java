@@ -61,7 +61,6 @@ public class DetailsActivity extends BaseActivity {
     }
 
     public void setupView() {
-        //suppose this view will be inflated by server data, so I decided to out this in separate method by SOLID
         organization.setText(R.string.organization);
         problemStatus.setText(R.string.problem_status);
         createdDate.setText(R.string.problem_created_date);
