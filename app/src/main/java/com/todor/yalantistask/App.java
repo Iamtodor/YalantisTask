@@ -6,6 +6,9 @@ import android.content.Context;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class App extends Application {
 
     private static Context context;
@@ -16,6 +19,8 @@ public class App extends Application {
         context = getApplicationContext();
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+        Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this)
+                .build());
     }
 
     public static Context getContext() {

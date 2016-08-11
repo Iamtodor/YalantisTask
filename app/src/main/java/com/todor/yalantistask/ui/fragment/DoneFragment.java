@@ -60,7 +60,7 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
             }
         }
 
-        recyclerView.setAdapter(new WorkAdapter(getActivity(), ItemDAO.getItemsForDone(getContext()), this));
+        recyclerView.setAdapter(new WorkAdapter(getActivity(), ItemDAO.getItemsForDone(), this));
 
         setFabBehavior(recyclerView, fab);
 
