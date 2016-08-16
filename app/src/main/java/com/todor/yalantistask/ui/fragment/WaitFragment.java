@@ -6,13 +6,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.todor.yalantistask.R;
 import com.todor.yalantistask.adapter.WorkAdapter;
 import com.todor.yalantistask.interfaces.OnItemClickListener;
 import com.todor.yalantistask.model.Item;
+import com.todor.yalantistask.model.ItemDAO;
 import com.todor.yalantistask.network.API;
 import com.todor.yalantistask.network.ApiService;
 import com.todor.yalantistask.ui.activity.DetailsActivity;
@@ -28,7 +28,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static io.realm.Realm.*;
+import static io.realm.Realm.getInstance;
 
 public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
@@ -84,10 +84,9 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
                     @Override
                     public void onNext(final List<Item> items) {
-                        mRealm.executeTransaction(realm -> realm.copyToRealmOrUpdate(items));
-                        mRealm.close();
+                        ItemDAO.saveItems(items);
 
-                        RealmResults<Item> results = mRealm.where(Item.class).findAll();
+                        List<Item> results = ItemDAO.getItemsForDone();
                         recyclerView.setAdapter(new WorkAdapter(getActivity(), results, WaitFragment.this));
                     }
                 });
