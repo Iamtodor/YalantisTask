@@ -26,8 +26,10 @@ public class ItemDAO {
 
     public static List<Item> saveItems(List<Item> items) {
         filteredItems.clear();
-        List<Item> model = null;
-        realm.executeTransaction(realm1 -> model.addAll(realm1.copyToRealmOrUpdate(items)));
+        List<Item> model = new ArrayList<>();
+//        realm.executeTransaction(realm1 -> model.addAll(realm1.copyToRealmOrUpdate(items)));
+        realm.beginTransaction();
+        model.addAll(realm.copyToRealmOrUpdate(items));
         realm.close();
 
         return model;
