@@ -62,7 +62,7 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
             }
         }
 
-        recyclerView.setAdapter(new WorkAdapter(getActivity(), modelForAdapter, this));
+        recyclerView.setAdapter(new WorkAdapter(modelForAdapter, this));
         setFabBehavior(recyclerView, fab);
 
         ApiService apiService = new ApiService();
@@ -86,8 +86,8 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
                     public void onNext(final List<Item> items) {
                         ItemDAO.saveItems(items);
 
-                        List<Item> results = ItemDAO.getItemsForDone();
-                        recyclerView.setAdapter(new WorkAdapter(getActivity(), results, WaitFragment.this));
+//                        List<Item> results = ItemDAO.getItemsForDone();
+//                        recyclerView.setAdapter(new WorkAdapter(getActivity(), results, WaitFragment.this));
                     }
                 });
     }
