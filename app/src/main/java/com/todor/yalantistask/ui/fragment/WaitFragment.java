@@ -17,25 +17,18 @@ import com.todor.yalantistask.network.API;
 import com.todor.yalantistask.network.ApiService;
 import com.todor.yalantistask.ui.activity.DetailsActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import io.realm.RealmResults;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static io.realm.Realm.getInstance;
 
 public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
     @Bind(R.id.recycler_view) protected RecyclerView recyclerView;
     @Bind(R.id.fab) protected FloatingActionButton fab;
-    private RealmConfiguration mRealmConfig;
-    private Realm mRealm;
+    private WorkAdapter adapter;
 
     @Override
     protected int getContentViewId() {
@@ -48,21 +41,14 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        initRealm();
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         recyclerView.setItemAnimator(itemAnimator);
 
-        RealmResults<Item> modelFromDB = mRealm.where(Item.class).findAll();
-        List<Item> modelForAdapter = new ArrayList<>();
+        List<Item> items = ItemDAO.getItemsForDone();
+        adapter = new WorkAdapter(items, this);
+        recyclerView.setAdapter(adapter);
 
-        for(Item item : modelFromDB) {
-            if(item.getState().getId() == 1 |item.getState().getId() == 3 |item.getState().getId() == 4) {
-                modelForAdapter.add(item);
-            }
-        }
-
-        recyclerView.setAdapter(new WorkAdapter(modelForAdapter, this));
         setFabBehavior(recyclerView, fab);
 
         ApiService apiService = new ApiService();
@@ -84,17 +70,10 @@ public class WaitFragment extends BaseFragment implements OnItemClickListener {
 
                     @Override
                     public void onNext(final List<Item> items) {
-                        ItemDAO.saveItems(items);
-
-//                        List<Item> results = ItemDAO.getItemsForDone();
-//                        recyclerView.setAdapter(new WorkAdapter(getActivity(), results, WaitFragment.this));
+                        List<Item> results = ItemDAO.saveItems(items);
+                        adapter.updateData(results);
                     }
                 });
-    }
-
-    private void initRealm() {
-        mRealmConfig = new RealmConfiguration.Builder(getContext()).build();
-        mRealm = getInstance(mRealmConfig);
     }
 
     @Override

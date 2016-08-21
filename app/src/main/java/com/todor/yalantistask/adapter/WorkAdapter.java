@@ -36,7 +36,6 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolderProd
     @Override
     public void onBindViewHolder(ViewHolderProductItem holder, int position) {
         Item task = mTasks.get(position);
-//        Picasso.with(mContext).load(task.getImgUrl()).error(R.drawable.image1).into(holder.imageCategory);
         holder.likeCounter.setText(String.valueOf(task.getLikesCounter()));
         holder.header.setText(task.getCategory().getName());
         String address = task.getUser().getAddress().getCity().getName() + ", " +

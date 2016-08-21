@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.todor.yalantistask.R;
+import com.todor.yalantistask.adapter.WorkAdapter;
 import com.todor.yalantistask.interfaces.OnItemClickListener;
 import com.todor.yalantistask.model.Item;
 import com.todor.yalantistask.model.ItemDAO;
@@ -27,6 +28,7 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
 
     @Bind(R.id.recycler_view) protected RecyclerView recyclerView;
     @Bind(R.id.fab) protected FloatingActionButton fab;
+    private WorkAdapter adapter;
 
     @Override
     protected int getContentViewId() {
@@ -43,26 +45,14 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         recyclerView.setItemAnimator(itemAnimator);
 
-//        RealmResults<Item> modelFromDB = mRealm.where(Item.class).findAll();
-//        List<Item> modelForAdapter = new ArrayList<>();
-//
-//        for(Item item : modelFromDB) {
-//            if(item.getState().getId() == 6 |item.getState().getId() == 10) {
-//                modelForAdapter.add(item);
-//            }
-//        }
-
-//        List<Item> itemsForDone = ItemDAO.getItemsForDone();
-//        recyclerView.setAdapter(new WorkAdapter(getActivity(), itemsForDone, this));
+        List<Item> items = ItemDAO.getItemsForDone();
+        adapter = new WorkAdapter(items, this);
+        recyclerView.setAdapter(adapter);
 
         setFabBehavior(recyclerView, fab);
 
         ApiService apiService = new ApiService();
         API api = apiService.getApiService();
-
-        if(!getUserVisibleHint()) {
-            return;
-        }
 
         api.getData("10,6")
                 .subscribeOn(Schedulers.io())
@@ -80,10 +70,8 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
 
                     @Override
                     public void onNext(final List<Item> items) {
-                        ItemDAO.saveItems(items);
-
-//                        List<Item> results = ItemDAO.getItemsForDone();
-//                        recyclerView.setAdapter(new WorkAdapter(getActivity(), results, DoneFragment.this));
+                        List<Item> results = ItemDAO.saveItems(items);
+                        adapter.updateData(results);
                     }
                 });
     }

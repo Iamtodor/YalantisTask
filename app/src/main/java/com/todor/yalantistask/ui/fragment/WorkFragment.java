@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.todor.yalantistask.R;
@@ -29,7 +28,6 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
     @Bind(R.id.recycler_view) protected RecyclerView recyclerView;
     @Bind(R.id.fab) protected FloatingActionButton fab;
-    private List<Item> mFilteredItems;
     private WorkAdapter adapter;
 
     @Override
@@ -47,20 +45,9 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         recyclerView.setItemAnimator(itemAnimator);
 
-//        RealmResults<Item> modelFromDB = mRealm.where(Item.class).findAll();
-//        List<Item> modelForAdapter = new ArrayList<>();
-//
-//        for(Item item : modelFromDB) {
-//            if(item.getState().getId() == 0 |item.getState().getId() == 5 |item.getState().getId() == 7 |
-//                    item.getState().getId() == 8 |item.getState().getId() == 9) {
-//                modelForAdapter.add(item);
-//            }
-//        }
-
-//        List<Item> items = ItemDAO.getItemsForDone();
-
-//        adapter = new WorkAdapter(getActivity(), items, this);
-//        recyclerView.setAdapter(adapter);
+        List<Item> items = ItemDAO.getItemsForDone();
+        adapter = new WorkAdapter(items, this);
+        recyclerView.setAdapter(adapter);
 
         setFabBehavior(recyclerView, fab);
 
@@ -84,8 +71,7 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
                     @Override
                     public void onNext(final List<Item> items) {
                         List<Item> results = ItemDAO.saveItems(items);
-                        Log.d(TAG, "onNext: " + results);
-                        recyclerView.setAdapter(new WorkAdapter(results, WorkFragment.this));
+                        adapter.updateData(results);
                     }
                 });
     }
