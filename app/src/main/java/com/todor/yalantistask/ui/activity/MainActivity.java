@@ -2,7 +2,6 @@ package com.todor.yalantistask.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -31,6 +30,7 @@ import com.facebook.GraphRequest;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.todor.yalantistask.R;
+import com.todor.yalantistask.interfaces.ToolbarListener;
 import com.todor.yalantistask.model.CurrentUser;
 import com.todor.yalantistask.model.User;
 import com.todor.yalantistask.ui.fragment.AllRequestsFragment;
@@ -46,7 +46,8 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FacebookCallback<LoginResult> {
+        implements NavigationView.OnNavigationItemSelectedListener, FacebookCallback<LoginResult>,
+        ToolbarListener{
 
     private static final String IT_RUH_DNIPRO = "http://www.itruh.dp.ua/";
     private static final String YALANTIS = "https://yalantis.com/";
@@ -58,7 +59,6 @@ public class MainActivity extends BaseActivity
     private static final String URL = "url";
 
     @Bind(R.id.made_by) protected TextView footerMadeBy;
-    @Bind(R.id.toolbar_container) protected AppBarLayout appBarLayout;
     @Bind(R.id.toolbar) protected Toolbar toolbar;
     @Bind(R.id.drawer_layout) protected DrawerLayout drawer;
     @Bind(R.id.nav_view) protected NavigationView navigationView;
@@ -291,6 +291,11 @@ public class MainActivity extends BaseActivity
         mRealm.copyToRealmOrUpdate(mUser);
         mRealm.commitTransaction();
         setLoginLogoutViews();
+    }
+
+    @Override
+    public Toolbar getToolbar() {
+        return toolbar;
     }
 
 }
