@@ -24,6 +24,7 @@ public class AllRequestsFragment extends BaseFragment {
     @Bind(R.id.viewPager) protected ViewPager viewPager;
     @Bind(R.id.tabs) protected TabLayout tabLayout;
     private ToolbarListener toolbarListener;
+    private Toolbar toolbar;
 
     @Override
     protected int getContentViewId() {
@@ -40,33 +41,46 @@ public class AllRequestsFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
-        Toolbar toolbar = toolbarListener.getToolbar();
+        toolbar = toolbarListener.getToolbar();
+
+        setTheme(0, getColorForTab(0));
 
         tabLayout.setOnTabSelectedListener(new AbstractSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int colorFrom = ((ColorDrawable) toolbar.getBackground()).getColor();
                 int colorTo = getColorForTab(tab.getPosition());
-
-                ValueAnimator valueAnimator = ValueAnimator.ofObject(new ArgbEvaluator(),
-                        colorFrom, colorTo);
-
-                valueAnimator.addUpdateListener(animation -> {
-                    int color = (int) animation.getAnimatedValue();
-
-                    toolbar.setBackgroundColor(color);
-                    tabLayout.setBackgroundColor(color);
-
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        getActivity().getWindow().setStatusBarColor(color);
-                    }
-                });
-
-                valueAnimator.setDuration(250);
-                valueAnimator.start();
+                setTheme(colorFrom, colorTo);
             }
         });
 
+    }
+
+    private void setTheme(int colorFrom, int colorTo) {
+        ValueAnimator valueAnimator = ValueAnimator.ofObject(new ArgbEvaluator(),
+                colorFrom, colorTo);
+
+        valueAnimator.addUpdateListener(animation -> {
+            int color = (int) animation.getAnimatedValue();
+
+            toolbar.setBackgroundColor(color);
+            tabLayout.setBackgroundColor(color);
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getActivity().getWindow().setStatusBarColor(color);
+            }
+        });
+
+        valueAnimator.setDuration(250);
+        valueAnimator.start();
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter.addFragment(new WorkFragment(), "Work");
+        adapter.addFragment(new DoneFragment(), "Done");
+        adapter.addFragment(new WaitFragment(), "Wait");
+        viewPager.setAdapter(adapter);
     }
 
     private int getColorForTab(int position) {
@@ -81,11 +95,4 @@ public class AllRequestsFragment extends BaseFragment {
         }
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new WorkFragment(), "Work");
-        adapter.addFragment(new DoneFragment(), "Done");
-        adapter.addFragment(new WaitFragment(), "Wait");
-        viewPager.setAdapter(adapter);
-    }
 }
