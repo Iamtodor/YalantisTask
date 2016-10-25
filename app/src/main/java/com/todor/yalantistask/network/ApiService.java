@@ -10,7 +10,7 @@ import retrofit.RxJavaCallAdapterFactory;
 
 public class ApiService {
 
-    public static final String BASE_URL = "http://dev-contact.yalantis.com";
+    private static final String BASE_URL = "http://dev-contact.yalantis.com";
     private OkHttpClient httpClient;
 
     public API getApiService() {
@@ -26,7 +26,7 @@ public class ApiService {
         return retrofit.create(API.class);
     }
 
-    public void setHttpClient() {
+    private void setHttpClient() {
         httpClient = new OkHttpClient();
         httpClient.interceptors().add(chain -> {
             Request original = chain.request();

@@ -5,5 +5,5 @@
         android:id="@+id/some_item"
         android:icon="@android:drawable/btn_default"
         android:title="Some item"
-        app:showAsAction="always" />
+        app:showAsAction="always"/>
 </menu>
