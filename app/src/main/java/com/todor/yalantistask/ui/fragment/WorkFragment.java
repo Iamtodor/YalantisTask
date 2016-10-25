@@ -65,7 +65,7 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
 
                     @Override
