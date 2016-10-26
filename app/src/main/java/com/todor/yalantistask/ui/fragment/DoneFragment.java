@@ -28,6 +28,7 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
 
     @Bind(R.id.recycler_view) protected RecyclerView recyclerView;
     @Bind(R.id.fab) protected FloatingActionButton fab;
+    private WorkAdapter adapter;
 
     @Override
     protected int getContentViewId() {
@@ -44,17 +45,9 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         recyclerView.setItemAnimator(itemAnimator);
 
-//        RealmResults<Item> modelFromDB = mRealm.where(Item.class).findAll();
-//        List<Item> modelForAdapter = new ArrayList<>();
-//
-//        for(Item item : modelFromDB) {
-//            if(item.getState().getId() == 6 |item.getState().getId() == 10) {
-//                modelForAdapter.add(item);
-//            }
-//        }
-
-        List<Item> itemsForDone = ItemDAO.getItemsForDone();
-        recyclerView.setAdapter(new WorkAdapter(getActivity(), itemsForDone, this));
+        List<Item> items = ItemDAO.getItemsForDone();
+        adapter = new WorkAdapter(items, this);
+        recyclerView.setAdapter(adapter);
 
         setFabBehavior(recyclerView, fab);
 
@@ -72,15 +65,13 @@ public class DoneFragment extends BaseFragment implements OnItemClickListener {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
 
                     @Override
                     public void onNext(final List<Item> items) {
-                        ItemDAO.saveItems(items);
-
-                        List<Item> results = ItemDAO.getItemsForDone();
-                        recyclerView.setAdapter(new WorkAdapter(getActivity(), results, DoneFragment.this));
+                        List<Item> results = ItemDAO.saveItems(items);
+                        adapter.updateData(results);
                     }
                 });
     }

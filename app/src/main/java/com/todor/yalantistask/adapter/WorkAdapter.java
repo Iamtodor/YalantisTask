@@ -1,6 +1,5 @@
 package com.todor.yalantistask.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +20,10 @@ import butterknife.ButterKnife;
 
 public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolderProductItem> {
 
-    private Context mContext;
     private List<Item> mTasks;
     private OnItemClickListener onItemClickListener;
 
-    public WorkAdapter(Context mContext, List<Item> tasks, OnItemClickListener onItemClickListener) {
-        this.mContext = mContext;
+    public WorkAdapter(List<Item> tasks, OnItemClickListener onItemClickListener) {
         this.mTasks = tasks;
         this.onItemClickListener = onItemClickListener;
     }
@@ -39,7 +36,6 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.ViewHolderProd
     @Override
     public void onBindViewHolder(ViewHolderProductItem holder, int position) {
         Item task = mTasks.get(position);
-//        Picasso.with(mContext).load(task.getImgUrl()).error(R.drawable.image1).into(holder.imageCategory);
         holder.likeCounter.setText(String.valueOf(task.getLikesCounter()));
         holder.header.setText(task.getCategory().getName());
         String address = task.getUser().getAddress().getCity().getName() + ", " +

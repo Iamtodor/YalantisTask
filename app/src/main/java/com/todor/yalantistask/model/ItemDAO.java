@@ -11,7 +11,6 @@ public class ItemDAO {
     private static Realm realm = Realm.getDefaultInstance();
 
     public static List<Item> getItemsForDone() {
-        filteredItems.clear();
 
         realm.executeTransaction(realm1 -> filteredItems = realm1
                 .where(Item.class)
@@ -19,16 +18,14 @@ public class ItemDAO {
                 .or()
                 .equalTo("state.id", 10)
                 .findAll());
-        realm.close();
 
         return filteredItems;
     }
 
     public static List<Item> saveItems(List<Item> items) {
         filteredItems.clear();
-        List<Item> model = null;
+        List<Item> model = new ArrayList<>();
         realm.executeTransaction(realm1 -> model.addAll(realm1.copyToRealmOrUpdate(items)));
-        realm.close();
 
         return model;
     }

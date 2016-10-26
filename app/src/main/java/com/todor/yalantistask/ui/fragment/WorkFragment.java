@@ -28,7 +28,6 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
     @Bind(R.id.recycler_view) protected RecyclerView recyclerView;
     @Bind(R.id.fab) protected FloatingActionButton fab;
-    private List<Item> mFilteredItems;
     private WorkAdapter adapter;
 
     @Override
@@ -46,19 +45,8 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         recyclerView.setItemAnimator(itemAnimator);
 
-//        RealmResults<Item> modelFromDB = mRealm.where(Item.class).findAll();
-//        List<Item> modelForAdapter = new ArrayList<>();
-//
-//        for(Item item : modelFromDB) {
-//            if(item.getState().getId() == 0 |item.getState().getId() == 5 |item.getState().getId() == 7 |
-//                    item.getState().getId() == 8 |item.getState().getId() == 9) {
-//                modelForAdapter.add(item);
-//            }
-//        }
-
         List<Item> items = ItemDAO.getItemsForDone();
-
-        adapter = new WorkAdapter(getActivity(), items, this);
+        adapter = new WorkAdapter(items, this);
         recyclerView.setAdapter(adapter);
 
         setFabBehavior(recyclerView, fab);
@@ -77,7 +65,7 @@ public class WorkFragment extends BaseFragment implements OnItemClickListener {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
 
                     @Override

@@ -3,13 +3,13 @@ apply plugin: 'realm-android'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 25
     buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.todor.yalantistask"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
@@ -23,6 +23,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+}
+
+ext {
+    supportLibraryVersion = '25.0.0'
 }
 
 dependencies {
