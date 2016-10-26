@@ -9,7 +9,6 @@ public class ItemDAO {
 
     private static List<Item> filteredItems = new ArrayList<>();
     private static Realm realm = Realm.getDefaultInstance();
-    private static List<Item> returnedItems;
 
     public static List<Item> getItemsForDone() {
         filteredItems.clear();
